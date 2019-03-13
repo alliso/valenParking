@@ -2,32 +2,32 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/main_menu_time"
-        android:icon="@android:drawable/ic_menu_recent_history"
+        android:id="@+id/main_menu_timer"
+        android:icon="@drawable/ic_timer"
         android:title="@string/main_menu_time_string"
         android:visible="true"
         app:showAsAction="always"/>
     <item
         android:id="@+id/main_menu_favourites"
-        android:icon="@android:drawable/btn_star_big_off"
+        android:icon="@drawable/ic_favourite"
         android:title="@string/main_menu_favourites_string"
         android:visible="true"
         app:showAsAction="always"/>
     <item
         android:id="@+id/main_menu_map"
-        android:icon="@android:drawable/btn_star_big_off"
+        android:icon="@drawable/ic_map"
         android:title="@string/main_menu_map_string"
         android:visible="true"
         app:showAsAction="always"/>
     <item
         android:id="@+id/main_menu_vehicle"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_vehicle"
         android:title="@string/main_menu_vehicle_string"
         android:visible="true"
         app:showAsAction="always"/>
     <item
         android:id="@+id/main_menu_account"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_account"
         android:title="@string/main_menu_account_string"
         android:visible="true"
         app:showAsAction="always"/>
