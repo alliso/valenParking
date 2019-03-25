@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ValenParking</string>
+    <string name="main_menu_time_string">Temporizador</string>
+    <string name="main_menu_favourites_string">Favoritos</string>
+    <string name="main_menu_map_string">Mapa</string>
+    <string name="main_menu_vehicle_string">Mi vehiculo</string>
+    <string name="main_menu_account_string">Perfil</string>
+</resources>
