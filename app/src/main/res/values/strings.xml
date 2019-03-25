@@ -5,4 +5,11 @@
     <string name="main_menu_map_string">Map</string>
     <string name="main_menu_vehicle_string">Vehicle</string>
     <string name="main_menu_account_string">Account</string>
+
+
+
+    // GOOGLE KEY
+
+    <string name="google_key" translatable="false">AIzaSyB-oYhvyWk8pKQn34yEvKTIfPO49kTuXIM</string>
+
 </resources>
