@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ValenParking</string>
+    <string name="main_menu_time_string">Timer</string>
+    <string name="main_menu_favourites_string">Favourites</string>
+    <string name="main_menu_map_string">Map</string>
+    <string name="main_menu_vehicle_string">Vehicle</string>
+    <string name="main_menu_account_string">Account</string>
 </resources>
