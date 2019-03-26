@@ -21,9 +21,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <fragment
+        <!-- <fragment
             android:id="@+id/map_fragment"
             android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" /> -->
+
+        <FrameLayout
+            android:id="@+id/map_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
