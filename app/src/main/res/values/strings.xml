@@ -1,15 +1,37 @@
 <resources>
     <string name="app_name">ValenParking</string>
+    <!--main activity-->
     <string name="main_menu_time_string">Timer</string>
     <string name="main_menu_favourites_string">Favourites</string>
     <string name="main_menu_map_string">Map</string>
     <string name="main_menu_vehicle_string">Vehicle</string>
     <string name="main_menu_account_string">Account</string>
 
-
-
-    // GOOGLE KEY
-
     <string name="google_key" translatable="false">AIzaSyB-oYhvyWk8pKQn34yEvKTIfPO49kTuXIM</string>
-
+    <!--login/signUp/forgot activity-->
+    <string name="login_email_string">Email</string>
+    <string name="login_password_string">Password</string>
+    <string name="login_confirm_password_string">Confirm Password</string>
+    <string name="login_sign_in_string">Sign In</string>
+    <string name="login_sign_up_string">Sign Up</string>
+    <string name="login_reset_password_string">Reset my password</string>
+    <string name="login_sign_in_google_string">Sign In with Google</string>
+    <string name="login_forgot_password_string">I have forgotten my password</string>
+    <string name="login_create_account_string">Create a new account</string>
+    <string name="login_go_login_string">Go back to login</string>
+    <string name="login_authentication_failed_string">Email or password is incorrect. Please, try again.</string>
+    <string name="login_email_verified_string">Please, confirm email first.</string>
+    <string name="login_complete_data_string">Please, confirm email first.</string>
+    <string name="login_googleApiClient_failed_string">Connection failed.</string>
+    <string name="login_with_google_account">Sign in with Google account</string>
+    <string name="signup_email_failed_string">An expected error occurred. Please, try again.</string>
+    <string name="signup_email_sent_string">An email has been sent to you. Please, confirm before sign in.</string>
+    <string name="signup_data_fill_failed_string">Please, make sure all the data is correct.</string>
+    <string name="signup_email_error_string">Email is not valid</string>
+    <string name="signup_password_error_string">Password should contain 1 lowercase, 1 uppercase, 1 number and 6 characters length at least</string>
+    <string name="signup_confirmpass_error_string">Confirm password does not match with Password</string>
+    <string name="forgot_email_string">An email has been sent to reset your password</string>
+    <string name="forgot_email_failed_string">Please, make sure the email address is correct.</string>
+    <!--account fragment-->
+    <string name="account_log_out_string">Log out</string>
 </resources>

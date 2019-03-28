@@ -31,6 +31,22 @@
           }
         },
         {
+          "client_id": "652442408718-hjib40psd8jomsl12o1pe2qnmqe9nbk5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upv.dadm.valenparking",
+            "certificate_hash": "ed43f884491a07568c27745465a2bec879ebe78b"
+          }
+        },
+        {
+          "client_id": "652442408718-2hgj492bvp7fbv6ujk2nl6utpauq6kiv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upv.dadm.valenparking",
+            "certificate_hash": "8af8d0657180cd4ab0cfe4a69c14d7bf616cf0e7"
+          }
+        },
+        {
           "client_id": "652442408718-ip4d1930e84ulpbcovjr1fppa96cqcq8.apps.googleusercontent.com",
           "client_type": 3
         }
