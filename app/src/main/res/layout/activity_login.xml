@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorBgLogin"
+    android:background="@color/colorBgApp"
     android:fillViewport="true"
     tools:context=".LoginActivity">
 
@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_edit_text_height"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="310dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="24dp"
             android:background="@drawable/edit_text_rounded"
@@ -26,11 +25,11 @@
             android:inputType="textEmailAddress"
             android:paddingLeft="@dimen/login_edit_text_space"
             android:paddingRight="@dimen/login_edit_text_space"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="@dimen/login_text_size"
             app:layout_constraintBottom_toTopOf="@+id/login_editTextPassword"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/login_editTextPassword"
@@ -83,9 +82,9 @@
             android:id="@+id/login_buttonLogInGoogle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_button_height"
-            android:layout_marginBottom="32dp"
-            android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="48dp"
             android:background="@drawable/button_ripple_google"
             android:text="@string/login_sign_in_google_string"
             android:textColor="@color/colorPrimaryText"
@@ -97,6 +96,7 @@
             android:id="@+id/login_buttonCreateAccount"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/button_ripple_acc"
             android:text="@string/login_create_account_string"
             android:textColor="@color/colorSecondaryText"

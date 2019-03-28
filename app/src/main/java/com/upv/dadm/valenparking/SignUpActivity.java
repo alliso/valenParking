@@ -84,18 +84,6 @@ public class SignUpActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
         });
 
-        Button btnGoLogIn = (Button) findViewById(R.id.sign_up_buttonGoLogIn);
-        btnGoLogIn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
-        });
-
         Button btnSignUp = (Button) findViewById(R.id.sign_up_buttonSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
@@ -123,10 +111,9 @@ public class SignUpActivity extends AppCompatActivity {
                                             if (task.isSuccessful()) {
                                                 Toast.makeText(SignUpActivity.this, getString(R.string.signup_email_sent_string), Toast.LENGTH_LONG).show();
                                                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                                                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);
                                                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                finish();
                                             }
                                             else
                                             {
@@ -145,12 +132,14 @@ public class SignUpActivity extends AppCompatActivity {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
     }
+
     private boolean isValidPassword(String password){
         // Necesita Contener -->    1 Num    1 Minuscula  1 Mayuscula  Min Caracteres 6
         String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$";
         Pattern pattern = Pattern.compile(passwordPattern);
         return pattern.matcher(password).matches();
     }
+
     private boolean isValidConfirmPassword(String password, String confirmPassword){
         if(password.equals(confirmPassword)) return true;
         return false;

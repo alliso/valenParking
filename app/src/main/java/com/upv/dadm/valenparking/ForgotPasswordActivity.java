@@ -46,18 +46,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
         });
 
-        Button btnGoLogIn = (Button) findViewById(R.id.forgot_buttonGoLogIn);
-        btnGoLogIn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
-        });
-
         Button btnForgot = (Button) findViewById(R.id.forgot_buttonForgot);
         btnForgot.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
@@ -66,10 +54,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     mAuth.sendPasswordResetEmail(email);
                     Toast.makeText(ForgotPasswordActivity.this, getString(R.string.forgot_email_string), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
                 }else{
                     Toast.makeText(ForgotPasswordActivity.this, getString(R.string.forgot_email_failed_string), Toast.LENGTH_SHORT).show();
                 }

@@ -10,17 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ForgotPasswordActivity"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity
-            android:name=".SignUpActivity" />
-        <activity
             android:name=".LauncherActivity">
-        </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:theme="@style/NoPreview"
-            android:windowSoftInputMode="adjustPan">
+            <!--android:theme="@android:style/Theme.NoDisplay">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,6 +20,15 @@
         </activity>
         <activity
             android:name=".MainActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/NoPreview"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity
+            android:name=".SignUpActivity" />
+        <activity
+            android:name=".ForgotPasswordActivity"/>
     </application>
 
 </manifest>

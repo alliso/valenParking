@@ -47,6 +47,14 @@
           }
         },
         {
+          "client_id": "652442408718-5nlgabrsi5hrv8nle762it74q06m6u3m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upv.dadm.valenparking",
+            "certificate_hash": "08bad72cef8dd9a504e99f0f039c40f3100f0c74"
+          }
+        },
+        {
           "client_id": "652442408718-ip4d1930e84ulpbcovjr1fppa96cqcq8.apps.googleusercontent.com",
           "client_type": 3
         }

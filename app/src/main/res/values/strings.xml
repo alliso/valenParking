@@ -19,12 +19,17 @@
     <string name="login_go_login_string">Go back to login</string>
     <string name="login_authentication_failed_string">Email or password is incorrect. Please, try again.</string>
     <string name="login_email_verified_string">Please, confirm email first.</string>
-    <string name="signup_email_failed_string">An expected error ocurred. Please, try again.</string>
+    <string name="login_complete_data_string">Please, confirm email first.</string>
+    <string name="login_googleApiClient_failed_string">Connection failed.</string>
+    <string name="login_with_google_account">Sign in with Google account</string>
+    <string name="signup_email_failed_string">An expected error occurred. Please, try again.</string>
     <string name="signup_email_sent_string">An email has been sent to you. Please, confirm before sign in.</string>
     <string name="signup_data_fill_failed_string">Please, make sure all the data is correct.</string>
     <string name="signup_email_error_string">Email is not valid</string>
-    <string name="signup_password_error_string">Password should contain 1 lowercose, 1 uppercase, 1 number and 6 characters length at least</string>
+    <string name="signup_password_error_string">Password should contain 1 lowercase, 1 uppercase, 1 number and 6 characters length at least</string>
     <string name="signup_confirmpass_error_string">Confirm password does not match with Password</string>
     <string name="forgot_email_string">An email has been sent to reset your password</string>
     <string name="forgot_email_failed_string">Please, make sure the email address is correct.</string>
+    <!--account fragment-->
+    <string name="account_log_out_string">Log out</string>
 </resources>
