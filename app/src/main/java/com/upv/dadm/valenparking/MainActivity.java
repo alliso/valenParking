@@ -1,5 +1,6 @@
 package com.upv.dadm.valenparking;
 
+import android.net.wifi.SupplicantState;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.upv.dadm.valenparking.Fragments.AccountFragment;
 import com.upv.dadm.valenparking.Fragments.FavouriteFragment;
 import com.upv.dadm.valenparking.Fragments.MapFragment;
@@ -14,6 +18,8 @@ import com.upv.dadm.valenparking.Fragments.TimerFragment;
 import com.upv.dadm.valenparking.Fragments.VehicleFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+    GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +35,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.main_fragment, new MapFragment())
+                    .replace(R.id.main_fragment, new MapFragment(), "MapFragment")
                     .commit();
+            ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
         }
     }
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Fragment fragment = null;
@@ -72,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .beginTransaction()
                 .replace(R.id.main_fragment, fragment, tag)
                 .commit();
-
         return true;
     }
 }
