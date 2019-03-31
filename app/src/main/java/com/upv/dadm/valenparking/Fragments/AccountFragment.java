@@ -10,15 +10,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+import com.upv.dadm.valenparking.EditProfileActivity;
 import com.upv.dadm.valenparking.LoginActivity;
 import com.upv.dadm.valenparking.R;
+import com.upv.dadm.valenparking.Utils.CircleTransform;
 
 public class AccountFragment extends Fragment {
 
     private FirebaseAuth mAuth;
-    View view;
+    private FirebaseUser currentUser;
+    private View view;
+    private ImageView imgUser;
 
     public AccountFragment(){ }
 
@@ -30,6 +37,28 @@ public class AccountFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         setHasOptionsMenu(true);
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        TextView edtxtUserName = (TextView) view.findViewById(R.id.account_useName);
+        imgUser = (ImageView) view.findViewById(R.id.account_userPicture);
+        edtxtUserName.setText(currentUser.getDisplayName());
+        //Cargar la imagen en el imageView
+        Picasso.with(getContext()).load(currentUser.getPhotoUrl().toString())
+                .resize(300,300)
+                .centerCrop()
+                .transform(new CircleTransform())
+                .into(imgUser);
+
+        Button btnEditProfile = view.findViewById(R.id.account_edit_profile);
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
@@ -52,4 +81,5 @@ public class AccountFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package com.upv.dadm.valenparking;
 
+import android.net.Uri;
 import android.net.wifi.SupplicantState;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -21,11 +22,18 @@ import com.upv.dadm.valenparking.Fragments.VehicleFragment;
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     GoogleMap map;
+    private String googlePhotoURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null)
+        {
+            googlePhotoURL = bundle.getString("googlePhotoURL");
+        }
 
         getSupportActionBar().setTitle(getString(R.string.app_name));
 

@@ -34,4 +34,11 @@
     <string name="forgot_email_failed_string">Please, make sure the email address is correct.</string>
     <!--account fragment-->
     <string name="account_log_out_string">Log out</string>
+    <string name="account_edit_profile_string">Edit your profile</string>
+    <string name="account_content_description_string">User picture</string>
+    <!--edit profile activity-->
+    <string name="edit_profile_username_title_string">User name</string>
+    <string name="edit_profile_useremail_title_string">Email</string>
+    <string name="edit_profile_save_changes_string">Save changes</string>
+
 </resources>

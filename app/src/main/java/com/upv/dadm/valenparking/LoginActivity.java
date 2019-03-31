@@ -28,13 +28,24 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
     private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInAccount account;
+    private FirebaseFirestore db;
+    private CollectionReference userDBRef;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private String email;
@@ -48,7 +59,10 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
         mGoogleApiClient = getGoogleApiClient();
+        db = FirebaseFirestore.getInstance();
+        userDBRef = db.collection("users");
 
         editTextEmail = (EditText)  findViewById(R.id.login_editTextEmail);
         editTextPassword = (EditText)  findViewById(R.id.login_editTextPassword);
@@ -104,7 +118,7 @@ public class LoginActivity extends AppCompatActivity{
         if(requestCode == RC_GOOGLE_SIGN_IN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if(result.isSuccess()){
-                GoogleSignInAccount account = result.getSignInAccount();
+                account = result.getSignInAccount();
                 loginByGoogleAccountIntoFirebase(account);
             }
         }
@@ -116,8 +130,19 @@ public class LoginActivity extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "logeado", Toast.LENGTH_SHORT).show();
-                            if(mAuth.getCurrentUser().isEmailVerified()){
+                            if(currentUser.isEmailVerified()){
+                                /*
+                                if user no exist in db
+                                Map<String, Object> user = new HashMap<>();
+                                user.put("userID", currentUser.getUid());
+                                user.put("userName", currentUser.getDisplayName());
+                                user.put("userEmail", currentUser.getEmail());
+                                user.put("userPicture", currentUser.getPhotoUrl());
+                                user.put("userFavourites", "");
+
+                                db.collection("users").add(user)
+
+                                 */
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
