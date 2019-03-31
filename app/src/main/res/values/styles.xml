@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--quitar destello-->
+    <style name="NoPreview" parent="AppTheme">
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
 </resources>

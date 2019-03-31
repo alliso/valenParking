@@ -2,5 +2,18 @@
 <resources>
     <color name="colorPrimary">#013ADF</color>
     <color name="colorPrimaryDark">#0431B4</color>
-    <color name="colorAccent">#FF8000</color>
+    <color name="colorAccent">#184B58</color>
+
+    <color name="colorMenuText">#FF8000</color>
+
+    <color name="colorBgApp">#FCF9F9</color>
+    <color name="colorBgEditText">#A1B9BF</color>
+    <color name="colorBgSigIn">#4797AB</color>
+
+    <color name="colorAccentDark">#387888</color>
+    <color name="colorPrimaryText">#FFFFFF</color>
+    <color name="colorSecondaryText">#222</color>
+
+    <color name="colorGoogle">#DD4B39</color>
+    <color name="colorGoogleDark">#B92D21</color>
 </resources>
