@@ -23,6 +23,7 @@
 
     <EditText
         android:id="@+id/vehicleEditText"
+        android:hint="Escribe una descripción de donde has aparcado"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -36,7 +37,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vehicleSaveButton" />
+        app:layout_constraintTop_toBottomOf="@+id/vehicleSaveButton"
+        android:background="@drawable/edit_text_rounded"/>
 
     <ImageButton
         android:id="@+id/vehicleMapButton"
@@ -47,7 +49,7 @@
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_dialog_map" />
+        app:srcCompat="@drawable/ubi" />
 
     <TextView
         android:id="@+id/vehicleStreetText"
@@ -75,7 +77,8 @@
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vehicleMapButton" />
+        app:layout_constraintTop_toBottomOf="@+id/vehicleMapButton"
+        android:background="@drawable/edit_text_rounded"/>
 
     <Button
         android:id="@+id/vehicleDeleteButton"
