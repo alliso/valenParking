@@ -1,13 +1,19 @@
-package com.upv.dadm.valenparking;
+package com.upv.dadm.valenparking.Adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.upv.dadm.valenparking.Parkings;
+import com.upv.dadm.valenparking.R;
+
 import java.util.List;
 
 public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.ViewHolder> {
@@ -17,7 +23,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
     private int layout;
 
     public fauvoriteAdapter(Context context, int resource, List<Parkings> data) {
-        this.data= data;
+        this.data = data;
         this.context = context;
         this.layout = resource;
     }
@@ -37,7 +43,9 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
     }
 
     @Override
-    public int getItemCount() { return data.size(); }
+    public int getItemCount() {
+        return data.size();
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_list_name;
