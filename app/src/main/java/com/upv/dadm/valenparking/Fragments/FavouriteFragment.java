@@ -32,7 +32,6 @@ public class FavouriteFragment extends Fragment {
     Integer position = 0;
     RecyclerView recyclerview_parkings;
     View view;
-    String favourites;
 
 
 
