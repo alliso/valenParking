@@ -19,7 +19,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_map" />
+        app:srcCompat="@drawable/ubi"
+        android:background="?android:selectableItemBackground"/>
 
     <EditText
         android:id="@+id/vehicleEditText"
@@ -49,7 +50,7 @@
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ubi" />
+        app:srcCompat="@drawable/ic_map" />
 
     <TextView
         android:id="@+id/vehicleStreetText"
