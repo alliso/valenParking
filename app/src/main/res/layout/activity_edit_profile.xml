@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            tools:srcCompat="@tools:sample/avatars[0]" />
+            app:srcCompat = "@drawable/ic_photo_def"/>
 
         <TextView
             android:id="@+id/edit_profile_userName_title"

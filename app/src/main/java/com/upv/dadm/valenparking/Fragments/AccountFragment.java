@@ -44,12 +44,15 @@ public class AccountFragment extends Fragment {
         TextView edtxtUserName = (TextView) view.findViewById(R.id.account_useName);
         imgUser = (ImageView) view.findViewById(R.id.account_userPicture);
         edtxtUserName.setText(currentUser.getDisplayName());
+
         //Cargar la imagen en el imageView
-        Picasso.with(getContext()).load(currentUser.getPhotoUrl().toString())
-                .resize(300,300)
-                .centerCrop()
-                .transform(new CircleTransform())
-                .into(imgUser);
+        if(currentUser.getPhotoUrl() != null){
+            Picasso.with(getContext()).load(currentUser.getPhotoUrl().toString())
+                    .resize(300,300)
+                    .centerCrop()
+                    .transform(new CircleTransform())
+                    .into(imgUser);
+        }
 
         Button btnEditProfile = view.findViewById(R.id.account_edit_profile);
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
