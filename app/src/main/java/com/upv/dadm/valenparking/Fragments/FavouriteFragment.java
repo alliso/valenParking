@@ -21,6 +21,7 @@ public class FavouriteFragment extends Fragment {
 
     List<Parkings> listParkings = new ArrayList<Parkings>();
     Parkings parking = new Parkings();
+    Parkings parking1 = new Parkings();
     fauvoriteAdapter adapter;
     Integer position = 0;
     RecyclerView recyclerview_parkings;
@@ -36,6 +37,9 @@ public class FavouriteFragment extends Fragment {
         parking.setFree(150);
         parking.setParkingName("HOLA QUE TAL");
         listParkings.add(parking);
+        parking1.setFree(111);
+        parking1.setParkingName("Prueba2");
+        listParkings.add(parking1);
 
     }
 
