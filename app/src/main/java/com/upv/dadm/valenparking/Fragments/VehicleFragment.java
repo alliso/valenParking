@@ -145,14 +145,14 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
                     .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-                            Log.d(TAG,location.getAltitude() + "");
+                            Log.d(TAG,"AQUIIIIIIIIII");
+
                             if (location != null) {
                                 Geocoder geocoder = new Geocoder(getContext());
                                 try {
-                                    Log.d(TAG,"Latitud: " + location.getLatitude());
                                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),  location.getLongitude(),1);
-
                                     if(addresses.size() > 0) {
+                                        Log.d(TAG,"HOLA");
                                         locationStreet = "" + addresses.get(0).getAddressLine(0);
                                         locationDescription = descrEdit.getText() + "";
                                         locationCoord =  "http://maps.google.com/maps?daddr=" + location.getLatitude() + "," + location.getLongitude() + " (" + "Tu coche" + ")";
@@ -161,18 +161,20 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
                                         editor.putString("myLocationCoord", locationCoord);
                                         editor.apply();
                                     } else {
-                                        Toast.makeText(getContext(),"No puedo obtener la localización", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(),"No sabemos en que calle estas", Toast.LENGTH_LONG).show();
                                     }
                                 }catch (IOException e) {
                                     e.printStackTrace();
                                 }
+                            } else {
+                                Toast.makeText(getContext(),"No puedo obtener la localización", Toast.LENGTH_LONG).show();
                             }
                             updateUi();
                         }
                     }).addOnFailureListener(getActivity(), new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(),"No puedo obtener la localización", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"No sabemos en que calle estas", Toast.LENGTH_LONG).show();
                 }
             });
         }
