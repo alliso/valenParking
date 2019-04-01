@@ -35,34 +35,42 @@ public class FavouriteFragment extends Fragment {
     String favourites;
 
 
+
     public FavouriteFragment(){ }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recuperarFav();
         if(savedInstanceState != null) {
             position = savedInstanceState.getInt("position");
         }
-        parking.setFree(150);
-        parking.setParkingName("HOLA QUE TAL");
-        listParkings.add(parking);
-
-
-        parking1.setFree(111);
-        parking1.setParkingName(favourites);
-        listParkings.add(parking1);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_favourite, null);
-        adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings);
-        recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
-        recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerview_parkings.setAdapter(adapter);
+        recuperarFav(new MyCallback() {
+            @Override
+            public void onCallback(String value) {
+                String[] aparcamientos = value.split(",");
+                Log.v("prueba", aparcamientos.toString());
+                for (String x : aparcamientos){
+                    Parkings parking = new Parkings();
+                    parking.setParkingName(x.toString());
+                    parking.setFree(100);
+                    listParkings.add(parking);
+                }
+
+
+
+                adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings);
+                recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
+                recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                recyclerview_parkings.setAdapter(adapter);
+            }
+
+        });
+
         return view;
     }
 
@@ -77,18 +85,18 @@ public class FavouriteFragment extends Fragment {
         return uid;
     }
 
-    public void recuperarFav(){
+    public void recuperarFav(final MyCallback myCallback){
         String user = getUserUID();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users").child(user);
-
-
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //String valor = dataSnapshot.getValue();
-                favourites = valor;
+                String res = dataSnapshot.child("fav").child("name").getValue().toString();
+                Log.v("prueba", res);
+                myCallback.onCallback(res);
             }
 
             @Override
@@ -97,5 +105,11 @@ public class FavouriteFragment extends Fragment {
             }
 
         });
+
     }
+    public interface MyCallback {
+        void onCallback(String value);
+    }
+
+
 }
