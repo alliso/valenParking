@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
+//import com.google.android.gms.location.FusedLocationProviderClient;
+//import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,12 +42,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     private GoogleMap map;
     private GoogleApiClient client;
-    FusedLocationProviderClient locationProviderClient;
+    //FusedLocationProviderClient locationProviderClient;
     private SupportMapFragment mapFragment;
 
     public MapFragment(){ }
 
-    @Override
+   /* @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -59,7 +59,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
         locationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
     }
-
+*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,14 +104,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    @Override
+    /*@Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_LOCATION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 map.setMyLocationEnabled(true);
             }
         }
-    }
+    }*/
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
