@@ -116,37 +116,6 @@ public class FavouriteFragment extends Fragment {
         });
 
     }
-
-    public void GetUserFav(){
-        db = FirebaseFirestore.getInstance();
-        String email = "";
-        String password = "";
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            currentUser = mAuth.getCurrentUser();
-                            if (currentUser.isEmailVerified()) {
-                                Query query = userDBRef.whereEqualTo("userID", currentUser.getUid());
-                                final Task<QuerySnapshot> taskQuery = query.get();
-                                taskQuery.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            if (task.getResult().size() > 0) {
-                                                String[] name = currentUser.getEmail().split("@");
-
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-    }
     public interface MyCallback {
         void onCallback(String value);
     }
