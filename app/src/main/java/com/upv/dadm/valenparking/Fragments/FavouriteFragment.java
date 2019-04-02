@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
 import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
@@ -26,8 +27,6 @@ import java.util.List;
 public class FavouriteFragment extends Fragment {
 
     List<Parkings> listParkings = new ArrayList<Parkings>();
-    Parkings parking = new Parkings();
-    Parkings parking1 = new Parkings();
     fauvoriteAdapter adapter;
     Integer position = 0;
     RecyclerView recyclerview_parkings;
@@ -105,6 +104,10 @@ public class FavouriteFragment extends Fragment {
 
         });
 
+    }
+
+    public void GetUserFav(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
     }
     public interface MyCallback {
         void onCallback(String value);
