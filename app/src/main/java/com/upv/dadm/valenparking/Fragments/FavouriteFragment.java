@@ -77,11 +77,12 @@ public class FavouriteFragment extends Fragment {
 
         GetUserFav(new MyCallback() {
             @Override
-            public void onCallback(JSONArray value) { Log.v("prueba", value.toString());
+            public void onCallback(JSONArray value) {
+                //Log.v("prueba", value.toString());
                 try {
                     for (int i = 0; i < value.length(); i++) {
-                        Log.v("prueba", value.getJSONObject(i).get("name").toString());
-                        Log.v("prueba", value.getJSONObject(i).get("address").toString());
+                        //Log.v("prueba", value.getJSONObject(i).get("name").toString());
+                        //Log.v("prueba", value.getJSONObject(i).get("address").toString());
 
                         Parkings parking = new Parkings();
                         parking.setParkingName(value.getJSONObject(i).get("name").toString());
