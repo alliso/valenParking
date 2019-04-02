@@ -150,7 +150,7 @@ public class FavouriteFragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Object[] data = document.getData().values().toArray();
                             try {
-                                favouritesJSON = new JSONArray(data[1].toString()); //cambiar a JSON ARRAY
+                                favouritesJSON = new JSONArray(data[1].toString());
                                 myCallback.onCallback(favouritesJSON);
                             }catch (Exception e){}
                         }
