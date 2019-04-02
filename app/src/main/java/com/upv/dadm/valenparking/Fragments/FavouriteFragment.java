@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
 import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class FavouriteFragment extends Fragment {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private CollectionReference userDBRef;
-
+    JSONArray favouritesJSON;
 
 
     public FavouriteFragment(){ }
@@ -73,17 +75,27 @@ public class FavouriteFragment extends Fragment {
                     listParkings.add(parking);
                 }*/
 
-       GetUserFav();
+        GetUserFav(new MyCallback() {
+            @Override
+            public void onCallback(JSONArray value) { Log.v("prueba", value.toString());
+                try {
+                    for (int i = 0; i < value.length(); i++) {
+                        Log.v("prueba", value.getJSONObject(i).get("name").toString());
+                        Log.v("prueba", value.getJSONObject(i).get("address").toString());
 
+                        Parkings parking = new Parkings();
+                        parking.setParkingName(value.getJSONObject(i).get("name").toString());
+                        parking.setCalle(value.getJSONObject(i).get("address").toString());
+                        listParkings.add(parking);
+                    }
+                    adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings);
+                    recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
+                    recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                    recyclerview_parkings.setAdapter(adapter);
 
-        adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings);
-        recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
-        recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerview_parkings.setAdapter(adapter);
-
-
-
-
+                }catch(Exception e){}
+            }
+        });
         return view;
     }
 
@@ -121,7 +133,7 @@ public class FavouriteFragment extends Fragment {
 
     }*/
 
-    public void GetUserFav(){
+    public void GetUserFav(final MyCallback myCallback){
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         userDBRef = db.collection("users");
@@ -134,17 +146,11 @@ public class FavouriteFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (task.getResult().size() > 0) {
-
-
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Object[] data = document.getData().values().toArray();
-                            Log.v("prueba", data[1].toString());
                             try {
-                                JSONObject favouritesJSON = new JSONObject(data[1].toString()); //cambiar a JSON ARRAY
-                                Log.v("prueba", favouritesJSON.get("name").toString());
-                                if (document.getId().equals("userFavourites")) {
-                                    Log.v("prueba", document.getData().toString());
-                                }
+                                favouritesJSON = new JSONArray(data[1].toString()); //cambiar a JSON ARRAY
+                                myCallback.onCallback(favouritesJSON);
                             }catch (Exception e){}
                         }
 
@@ -155,7 +161,7 @@ public class FavouriteFragment extends Fragment {
         });
     }
     public interface MyCallback {
-        void onCallback(String value);
+        void onCallback(JSONArray value);
     }
 
 

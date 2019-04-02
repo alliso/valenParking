@@ -2,11 +2,11 @@ package com.upv.dadm.valenparking;
 
 public class Parkings {
     public String name;
-    public int free;
+    public String calle;
 
-    public Parkings(String name, int free){
+    public Parkings(String name, String calle){
         this.name = name;
-        this.free = free;
+        this.calle = calle;
     }
 
     public Parkings(){ }
@@ -19,12 +19,12 @@ public class Parkings {
         this.name = ParkingName;
     }
 
-    public int getFree() {
-        return free;
+    public String getCalle() {
+        return calle;
     }
 
-    public void setFree(int free) {
-        this.free = free;
+    public void setCalle(String calle) {
+        this.calle = calle;
     }
 }
 

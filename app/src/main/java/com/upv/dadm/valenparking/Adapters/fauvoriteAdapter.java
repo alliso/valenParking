@@ -39,7 +39,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.tv_list_name.setText((data.get(position).getParkingName()));
-        holder.tv_list_free.setText((String.valueOf(data.get(position).getFree())));
+        holder.tv_list_free.setText((String.valueOf(data.get(position).getCalle())));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
         public ViewHolder(View view) {
             super(view);
             tv_list_name = (TextView) view.findViewById(R.id.quotation_list_name);
-            tv_list_free = (TextView) view.findViewById(R.id.quotation_list_plazas_libres);
+            tv_list_free = (TextView) view.findViewById(R.id.quotation_list_calle);
             v = view;
         }
     }
