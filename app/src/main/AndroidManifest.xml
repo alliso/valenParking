@@ -39,5 +39,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_key" />
 
+        <receiver
+            android:name=".Services.AlarmReceiver"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="candroid.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
+
 </manifest>
