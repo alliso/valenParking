@@ -21,8 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,10 +29,10 @@ import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
 import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class FavouriteFragment extends Fragment {
 
@@ -63,7 +61,7 @@ public class FavouriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_favourite, null);
-        recuperarFav(new MyCallback() {
+       /* recuperarFav(new MyCallback() {
             @Override
             public void onCallback(String value) {
                 String[] aparcamientos = value.split(",");
@@ -73,22 +71,23 @@ public class FavouriteFragment extends Fragment {
                     parking.setParkingName(x.toString());
                     parking.setFree(100);
                     listParkings.add(parking);
-                }
+                }*/
+
+       GetUserFav();
+
+
+        adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings);
+        recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
+        recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerview_parkings.setAdapter(adapter);
 
 
 
-                adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings);
-                recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
-                recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                recyclerview_parkings.setAdapter(adapter);
-            }
-
-        });
 
         return view;
     }
 
-    public String getUserUID() {
+    /*public String getUserUID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = "";
         if (user != null) {
@@ -97,9 +96,9 @@ public class FavouriteFragment extends Fragment {
             Log.v("prueba", uid);
         }
         return uid;
-    }
+    }*/
 
-    public void recuperarFav(final MyCallback myCallback){
+    /*public void recuperarFav(final MyCallback myCallback){
         String user = getUserUID();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users").child(user);
@@ -120,8 +119,41 @@ public class FavouriteFragment extends Fragment {
 
         });
 
-    }
+    }*/
 
+    public void GetUserFav(){
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        userDBRef = db.collection("users");
+        currentUser = mAuth.getCurrentUser();
+        Query query = userDBRef.whereEqualTo("userID", currentUser.getUid());
+        final Task<QuerySnapshot> taskQuery = query.get();
+
+        taskQuery.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().size() > 0) {
+
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Object[] data = document.getData().values().toArray();
+                            Log.v("prueba", data[1].toString());
+                            try {
+                                JSONObject favouritesJSON = new JSONObject(data[1].toString()); //cambiar a JSON ARRAY
+                                Log.v("prueba", favouritesJSON.get("name").toString());
+                                if (document.getId().equals("userFavourites")) {
+                                    Log.v("prueba", document.getData().toString());
+                                }
+                            }catch (Exception e){}
+                        }
+
+
+                    }
+                }
+            }
+        });
+    }
     public interface MyCallback {
         void onCallback(String value);
     }
