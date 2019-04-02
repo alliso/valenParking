@@ -1,6 +1,7 @@
 package com.upv.dadm.valenparking.Fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -16,7 +20,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
 import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
@@ -31,6 +38,10 @@ public class FavouriteFragment extends Fragment {
     Integer position = 0;
     RecyclerView recyclerview_parkings;
     View view;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private FirebaseFirestore db;
+    private CollectionReference userDBRef;
 
 
 
@@ -107,7 +118,34 @@ public class FavouriteFragment extends Fragment {
     }
 
     public void GetUserFav(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
+        String email = "";
+        String password = "";
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            currentUser = mAuth.getCurrentUser();
+                            if (currentUser.isEmailVerified()) {
+                                Query query = userDBRef.whereEqualTo("userID", currentUser.getUid());
+                                final Task<QuerySnapshot> taskQuery = query.get();
+                                taskQuery.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            if (task.getResult().size() > 0) {
+                                                String[] name = currentUser.getEmail().split("@");
+
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
     }
     public interface MyCallback {
         void onCallback(String value);
