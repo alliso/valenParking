@@ -21,8 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
@@ -30,6 +33,8 @@ import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class FavouriteFragment extends Fragment {
 
@@ -116,6 +121,7 @@ public class FavouriteFragment extends Fragment {
         });
 
     }
+
     public interface MyCallback {
         void onCallback(String value);
     }
