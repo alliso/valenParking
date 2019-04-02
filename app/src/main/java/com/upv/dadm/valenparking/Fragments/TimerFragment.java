@@ -21,6 +21,7 @@ import android.widget.TimePicker;
 
 import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.R;
+import com.upv.dadm.valenparking.Services.AlarmReceiver;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -61,16 +62,16 @@ public class TimerFragment extends Fragment {
 
     public void disableChildren() {
 
+
+        Intent i = new Intent(getActivity(), AlarmReceiver.class);
+        PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),1,i,0);
+
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 15000, pemdingIntent);
+
+
         /*
-        Intent i = new Intent(getActivity(), MainActivity.class);
-        PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),0,i,0);
-
-        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() , 8000, pemdingIntent);
-        */
-
-
         NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
@@ -104,7 +105,7 @@ public class TimerFragment extends Fragment {
 
         manager.notify(1, notificationBuilder.build());
 
-
+*/
         Log.d(TAG, "AQUIIIIIIIIII");
 
     }
