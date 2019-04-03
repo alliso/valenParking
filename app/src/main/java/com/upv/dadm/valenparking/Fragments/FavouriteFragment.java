@@ -63,17 +63,6 @@ public class FavouriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_favourite, null);
-       /* recuperarFav(new MyCallback() {
-            @Override
-            public void onCallback(String value) {
-                String[] aparcamientos = value.split(",");
-                Log.v("prueba", aparcamientos.toString());
-                for (String x : aparcamientos){
-                    Parkings parking = new Parkings();
-                    parking.setParkingName(x.toString());
-                    parking.setFree(100);
-                    listParkings.add(parking);
-                }*/
 
         GetUserFav(new MyCallback() {
             @Override
@@ -150,7 +139,7 @@ public class FavouriteFragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Object[] data = document.getData().values().toArray();
                             try {
-                                favouritesJSON = new JSONArray(data[1].toString()); //cambiar a JSON ARRAY
+                                favouritesJSON = new JSONArray(data[1].toString());
                                 myCallback.onCallback(favouritesJSON);
                             }catch (Exception e){}
                         }
