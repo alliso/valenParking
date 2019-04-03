@@ -1,8 +1,10 @@
 package com.upv.dadm.valenparking.Fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.upv.dadm.valenparking.EditProfileActivity;
 import com.upv.dadm.valenparking.LoginActivity;
@@ -46,13 +49,13 @@ public class AccountFragment extends Fragment {
         edtxtUserName.setText(currentUser.getDisplayName());
 
         //Cargar la imagen en el imageView
-        if(currentUser.getPhotoUrl() != null){
-            Picasso.with(getContext()).load(currentUser.getPhotoUrl().toString())
-                    .resize(300,300)
-                    .centerCrop()
-                    .transform(new CircleTransform())
-                    .into(imgUser);
-        }
+        Uri photouri = currentUser.getPhotoUrl();
+        Picasso.with(getContext()).load(currentUser.getPhotoUrl().toString())
+                .resize(300,300)
+                .centerCrop()
+                .transform(new CircleTransform())
+                .into(imgUser);
+
 
         Button btnEditProfile = view.findViewById(R.id.account_edit_profile);
         btnEditProfile.setOnClickListener(new View.OnClickListener() {

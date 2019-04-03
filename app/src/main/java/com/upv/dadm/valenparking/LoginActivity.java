@@ -139,13 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
-                                            if (task.getResult().size() > 0) {
-                                                String [] name = currentUser.getEmail().split("@");
-                                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                        .setDisplayName(name[0])
-                                                        .setPhotoUri(Uri.parse("https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwitzbigmK_hAhUBzhoKHZ8BDesQjRx6BAgBEAU&url=https%3A%2F%2Fcursodeyogaparaprincipiantes.com%2Fmember%2Fcurso-yoga-online-vieja%2F&psig=AOvVaw1Iv8L0wdiqUEqhcZniSm-p&ust=1554218208310296"))
-                                                        .build();
-                                                currentUser.updateProfile(profileUpdates);
+                                            if (task.getResult().size() > 0 ){
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                 startActivity(intent);
                                                 finish();
@@ -153,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 String [] name = currentUser.getEmail().split("@");
                                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                         .setDisplayName(name[0])
-                                                        .setPhotoUri(Uri.parse("android.resource://com.upv.dadm.valenparking/drawable/ic_photo_def]"))
+                                                        .setPhotoUri(Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.user_default))
                                                         .build();
 
                                                 currentUser.updateProfile(profileUpdates);
@@ -162,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 user.put("userID", currentUser.getUid());
                                                 user.put("userName", name[0]);
                                                 user.put("userEmail", currentUser.getEmail());
-                                                user.put("userPicture", "");
+                                                user.put("userPicture", "android.resource://" + getPackageName() + "/" + R.drawable.user_default);
                                                 user.put("userFavourites", "");
                                                 userDBRef.add(user);
 
