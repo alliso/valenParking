@@ -65,7 +65,6 @@ public class FavouriteFragment extends Fragment {
     fauvoriteAdapter.OnFavouriteShortClickListener listener;
     private ProgressBar progressBar;
     private TextView listavaciaMsg;
-    Map<String, Object> user = new HashMap<>();
     String documentId = "";
 
 
@@ -211,10 +210,6 @@ public class FavouriteFragment extends Fragment {
                             documentId =  document.getId();
                             Object[] data = document.getData().values().toArray();
                             try {
-                                user.put("userEmail", currentUser.getEmail());
-                                user.put("userID", currentUser.getUid());
-                                user.put("userName", currentUser.getDisplayName());
-                                user.put("userPicture", currentUser.getPhotoUrl());
                                 favouritesJSON = new JSONArray(data[1].toString());
                                 if(favouritesJSON.length()==0) listavaciaMsg.setVisibility(view.VISIBLE);
                                 myCallback.onCallback(favouritesJSON);
@@ -241,7 +236,6 @@ public class FavouriteFragment extends Fragment {
 
                 newList.put(park);
             }
-            user.put("userFavourites", newList.toString());
             db.collection("users").document(documentId).update("userFavourites", newList.toString());
 
         }catch (Exception e){}
