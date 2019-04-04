@@ -16,4 +16,6 @@
 
     <color name="colorGoogle">#DD4B39</color>
     <color name="colorGoogleDark">#B92D21</color>
+
+    <color name="secondColor">#7a7cff</color>
 </resources>

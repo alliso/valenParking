@@ -1,7 +1,7 @@
 <resources>
-    <string name="serverKey">AIzaSyCUWP1kqD0OOdwQz7IKpiy1JBB4J1JOF54</string>
-    <string name="androidKey">AIzaSyDrRMcAY5tncU5dYeD1XBbQttLGOCf_c0Q</string>
-    <string name="browserKey">AIzaSyDXgpeuGtiVo2mWAfr4e6Ocf9J5ibE2eRc</string>
-    <string name="androidClient">652442408718-b469v2llvva3fnqrhs45fhepto2fsb6g.apps.googleusercontent.com</string>
-    <string name="webClient">652442408718-ip4d1930e84ulpbcovjr1fppa96cqcq8.apps.googleusercontent.com</string>
+    <string name="serverKey" translatable="false">AIzaSyCUWP1kqD0OOdwQz7IKpiy1JBB4J1JOF54</string>
+    <string name="androidKey" translatable="false">AIzaSyDrRMcAY5tncU5dYeD1XBbQttLGOCf_c0Q</string>
+    <string name="browserKey" translatable="false">AIzaSyDXgpeuGtiVo2mWAfr4e6Ocf9J5ibE2eRc</string>
+    <string name="androidClient" translatable="false">652442408718-b469v2llvva3fnqrhs45fhepto2fsb6g.apps.googleusercontent.com</string>
+    <string name="webClient" translatable="false">652442408718-ip4d1930e84ulpbcovjr1fppa96cqcq8.apps.googleusercontent.com</string>
 </resources>
