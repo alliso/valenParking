@@ -32,6 +32,7 @@
     <string name="signup_confirmpass_error_string">Confirm password does not match with Password</string>
     <string name="forgot_email_string">An email has been sent to reset your password</string>
     <string name="forgot_email_failed_string">Please, make sure the email address is correct.</string>
+    <string name="menu_clearFavourites">Delete favourites</string>
     <!--account fragment-->
     <string name="account_log_out_string">Log out</string>
 </resources>
