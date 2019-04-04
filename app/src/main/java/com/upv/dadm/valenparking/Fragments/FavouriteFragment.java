@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.JsonReader;
@@ -46,6 +47,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.graphics.drawable.ClipDrawable.HORIZONTAL;
 
 public class FavouriteFragment extends Fragment {
 
@@ -125,6 +128,8 @@ public class FavouriteFragment extends Fragment {
                     adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
                     recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
                     recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                    DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), HORIZONTAL);
+                    recyclerview_parkings.addItemDecoration(itemDecor);
                     recyclerview_parkings.setAdapter(adapter);
                     progressBar.setVisibility(view.INVISIBLE);
                 }catch(Exception e){}
