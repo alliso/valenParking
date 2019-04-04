@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LauncherActivity">
+            android:name=".LauncherActivity"
+            android:screenOrientation="portrait">
             <!--android:theme="@android:style/Theme.NoDisplay">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,16 +25,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity" />
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LoginActivity"
             android:theme="@style/NoPreview"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".SignUpActivity" />
+            android:name=".SignUpActivity"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".ForgotPasswordActivity"/>
+            android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
