@@ -12,9 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,9 +40,12 @@ import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FavouriteFragment extends Fragment {
 
@@ -58,6 +64,9 @@ public class FavouriteFragment extends Fragment {
     fauvoriteAdapter.OnFavouriteLongClickListener listener2;
     fauvoriteAdapter.OnFavouriteShortClickListener listener;
     private ProgressBar progressBar;
+    private TextView listavaciaMsg;
+    Map<String, Object> user = new HashMap<>();
+    String documentId = "";
 
 
     public FavouriteFragment(){ }
@@ -161,6 +170,28 @@ public class FavouriteFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 1){
+            int cont = 0;
+            List<Parkings> listParkingsAux = new ArrayList<Parkings>();
+            for(Parkings p : listParkings){
+                if(!p.isSelected()){
+                    listParkingsAux.add(p);
+                }else{
+                    cont++;
+                }
+            }
+            if(cont == listParkings.size()) {
+                fav_menu.findItem(R.id.menu_delete_all_quotations).setVisible(!hideIcon);
+                listavaciaMsg.setVisibility(view.VISIBLE);
+            }
+            listParkings = listParkingsAux;
+            adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
+            recyclerview_parkings.setAdapter(adapter);
+
+            updateUserFav();
+
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
     public void GetUserFav(final MyCallback myCallback){
@@ -177,9 +208,15 @@ public class FavouriteFragment extends Fragment {
                 if (task.isSuccessful()) {
                     if (task.getResult().size() > 0) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            documentId =  document.getId();
                             Object[] data = document.getData().values().toArray();
                             try {
+                                user.put("userEmail", currentUser.getEmail());
+                                user.put("userID", currentUser.getUid());
+                                user.put("userName", currentUser.getDisplayName());
+                                user.put("userPicture", currentUser.getPhotoUrl());
                                 favouritesJSON = new JSONArray(data[1].toString());
+                                if(favouritesJSON.length()==0) listavaciaMsg.setVisibility(view.VISIBLE);
                                 myCallback.onCallback(favouritesJSON);
                             }catch (Exception e){}
                         }
@@ -189,9 +226,45 @@ public class FavouriteFragment extends Fragment {
                 }
             }
         });
+
+    }
+
+    public void updateUserFav(){
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        JSONArray newList = new JSONArray();
+        try {
+            for (Parkings p : listParkings) {
+                JSONObject park = new JSONObject();
+                park.put("name", p.getParkingName());
+                park.put("address", p.getCalle());
+
+                newList.put(park);
+            }
+            user.put("userFavourites", newList.toString());
+            db.collection("users").document(documentId).update("userFavourites", newList.toString());
+
+        }catch (Exception e){}
     }
     public interface MyCallback {
         void onCallback(JSONArray value);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu_delete_all_quotations:
+                myDialogFragment DialogFragment = myDialogFragment.getInstance(getString(R.string.favourite_dialog_delete_all_msg));
+                Bundle args = new Bundle();
+                args.putString("click", "all");
+                DialogFragment.setArguments(args);
+                DialogFragment.setTargetFragment(getFragmentManager().findFragmentByTag("FavouriteFragment"), 0);
+                DialogFragment.show(getFragmentManager(), "MyDialogFragment");
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -199,10 +272,12 @@ public class FavouriteFragment extends Fragment {
         menuInflater.inflate(R.menu.menu_favourite, menu);
         menu.findItem(R.id.menu_delete_all_quotations).setVisible(!hideIcon);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_favourites);
+        listavaciaMsg = (TextView) view.findViewById(R.id.empty_fav_msg);
+        listavaciaMsg.setText(R.string.empty_favourite_msg);
+        listavaciaMsg.setVisibility(view.INVISIBLE);
         progressBar.setVisibility(view.VISIBLE);
         fav_menu = menu;
         super.onCreateOptionsMenu(menu,menuInflater);
     }
-
 
 }

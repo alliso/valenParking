@@ -21,6 +21,19 @@
         app:layout_constraintStart_toStartOf="@+id/fauvorite_list"
         app:layout_constraintTop_toTopOf="@+id/fauvorite_list" />
 
+    <TextView
+        android:id="@+id/empty_fav_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fauvorite_list"
+        app:layout_constraintEnd_toEndOf="@+id/fauvorite_list"
+        app:layout_constraintStart_toStartOf="@+id/fauvorite_list"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fauvorite_list"
         android:scrollbars="vertical"
