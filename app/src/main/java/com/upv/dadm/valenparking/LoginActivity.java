@@ -131,6 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, getString(R.string.login_with_email_passwd), Toast.LENGTH_SHORT).show();
                             currentUser = mAuth.getCurrentUser();
                             if (currentUser.isEmailVerified()) {
                                 Query query = userDBRef.whereEqualTo("userID", currentUser.getUid());
@@ -153,11 +154,13 @@ public class LoginActivity extends AppCompatActivity {
                                                 currentUser.updateProfile(profileUpdates);
 
                                                 Map<String, Object> user = new HashMap<>();
+                                                user.put("userEmail", currentUser.getEmail());
+                                                user.put("userFavourites", "");
                                                 user.put("userID", currentUser.getUid());
                                                 user.put("userName", name[0]);
-                                                user.put("userEmail", currentUser.getEmail());
                                                 user.put("userPicture", "android.resource://" + getPackageName() + "/" + R.drawable.user_default);
-                                                user.put("userFavourites", "");
+                                                user.put("userTypeAccount", "ByEmail");
+
                                                 userDBRef.add(user);
 
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -188,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private GoogleApiClient getGoogleApiClient() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("652442408718-ip4d1930e84ulpbcovjr1fppa96cqcq8.apps.googleusercontent.com")
+                .requestIdToken(getString(R.string.my_default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -214,9 +217,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, getString(R.string.login_with_google_account), Toast.LENGTH_SHORT).show();
+                    currentUser = mAuth.getCurrentUser();
+                    //Forzar a que no se cargue siempre la misma cuenta de google
                     if (mGoogleApiClient.isConnected()) {
-                        //Forzar a que no se cargue siempre la misma cuenta de google
-                        Query query = userDBRef.whereEqualTo("userID", account.getId());
+                        Query query = userDBRef.whereEqualTo("userID", currentUser.getUid());
                         final Task<QuerySnapshot> taskQuery = query.get();
                         taskQuery.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
@@ -230,11 +234,12 @@ public class LoginActivity extends AppCompatActivity {
                                         finish();
                                     } else {
                                         Map<String, Object> user = new HashMap<>();
-                                        user.put("userID", account.getId());
-                                        user.put("userName", account.getDisplayName());
                                         user.put("userEmail", account.getEmail());
-                                        user.put("userPicture", account.getPhotoUrl().toString());
                                         user.put("userFavourites", "");
+                                        user.put("userID", currentUser.getUid());
+                                        user.put("userName", account.getDisplayName());
+                                        user.put("userPicture", account.getPhotoUrl().toString());
+                                        user.put("userTypeAccount", "ByGoogle");
 
                                         userDBRef.add(user);
 

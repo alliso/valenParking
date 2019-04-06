@@ -66,26 +66,18 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        return view;
-    }
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.fragment_account_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.account_menu_log_out:
+        Button btnLogOut = view.findViewById(R.id.account_log_out);
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 mAuth.signOut();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();
-                return true;
+            }
+        });
 
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        return view;
     }
 
 }

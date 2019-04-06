@@ -21,23 +21,18 @@ import com.upv.dadm.valenparking.Fragments.VehicleFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    GoogleMap map;
-    private String googlePhotoURL;
+    private Fragment fragment = null;
+    private String tag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
-        {
-            googlePhotoURL = bundle.getString("googlePhotoURL");
-        }
-
         getSupportActionBar().setTitle(getString(R.string.app_name));
 
         ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setOnNavigationItemSelectedListener(this);
+
 
         //que se muestre por defecto MapFragment al entrar en la aplicación
         if (savedInstanceState == null) {
@@ -46,43 +41,74 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     .replace(R.id.main_fragment, new MapFragment(), "MapFragment")
                     .commit();
             ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
+        } else {
+            tag = savedInstanceState.getString("tagOfFragment");
+            fragment = getSupportFragmentManager().findFragmentByTag(tag);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_fragment, fragment, tag)
+                    .commit();
+
+            int item = 0;
+            if (tag.equals("TimerFragment")) item = R.id.main_menu_timer;
+            if (tag.equals("FavouriteFragment")) item = R.id.main_menu_favourites;
+            if (tag.equals("MapFragment")) item = R.id.main_menu_map;
+            if (tag.equals("VehicleFragment")) item = R.id.main_menu_vehicle;
+            if (tag.equals("AccountFragment")) item = R.id.main_menu_account;
+            ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(item);
+
         }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("tagOfFragment", tag);
     }
 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        Fragment fragment = null;
-        String tag = null;
         switch (menuItem.getItemId()) {
             case R.id.main_menu_timer:
                 tag = "TimerFragment";
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
-                if (fragment == null) { fragment = new TimerFragment(); }
+                if (fragment == null) {
+                    fragment = new TimerFragment();
+                }
                 break;
 
             case R.id.main_menu_favourites:
                 tag = "FavouriteFragment";
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
-                if (fragment == null) { fragment = new FavouriteFragment(); }
+                if (fragment == null) {
+                    fragment = new FavouriteFragment();
+                }
                 break;
 
             case R.id.main_menu_map:
                 tag = "MapFragment";
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
-                if (fragment == null) { fragment = new MapFragment(); }
+                if (fragment == null) {
+                    fragment = new MapFragment();
+                }
                 break;
 
             case R.id.main_menu_vehicle:
                 tag = "VehicleFragment";
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
-                if (fragment == null) { fragment = new VehicleFragment(); }
+                if (fragment == null) {
+                    fragment = new VehicleFragment();
+                }
                 break;
 
             case R.id.main_menu_account:
                 tag = "AccountFragment";
                 fragment = getSupportFragmentManager().findFragmentByTag(tag);
-                if (fragment == null) { fragment = new AccountFragment(); }
+                if (fragment == null) {
+                    fragment = new AccountFragment();
+                }
                 break;
         }
         getSupportFragmentManager()
