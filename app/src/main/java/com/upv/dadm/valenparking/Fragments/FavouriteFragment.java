@@ -213,12 +213,17 @@ public class FavouriteFragment extends Fragment {
                     if (task.getResult().size() > 0) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             documentId =  document.getId();
+
                             Object[] data = document.getData().values().toArray();
                             try {
+
                                 favouritesJSON = new JSONArray(data[1].toString());
-                                if(favouritesJSON.length()==0) listavaciaMsg.setVisibility(view.VISIBLE);
+                                if(favouritesJSON.length()==0 || data[1] == null) listavaciaMsg.setVisibility(view.VISIBLE);
                                 myCallback.onCallback(favouritesJSON);
-                            }catch (Exception e){}
+                            }catch (Exception e){
+                                listavaciaMsg.setVisibility(view.VISIBLE);
+                                progressBar.setVisibility(view.INVISIBLE);
+                            }
                         }
 
 
