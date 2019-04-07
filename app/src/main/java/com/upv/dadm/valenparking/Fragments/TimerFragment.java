@@ -18,11 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.R;
 import com.upv.dadm.valenparking.Services.AlarmReceiver;
 
+import java.util.Calendar;
+
+import static android.Manifest.permission_group.CALENDAR;
 import static android.content.Context.ALARM_SERVICE;
 
 public class TimerFragment extends Fragment {
@@ -62,50 +66,22 @@ public class TimerFragment extends Fragment {
 
     public void disableChildren() {
 
+        // poner el tiempo a una hora determinada
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY,hour);
+        calendar.set(Calendar.MINUTE, minute);
 
         Intent i = new Intent(getActivity(), AlarmReceiver.class);
         PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),1,i,0);
 
         AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 15000, pemdingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() /1000, pemdingIntent);
 
-
-        /*
-        NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
-
-            // Configure the notification channel.
-            notificationChannel.setDescription("Channel description");
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-            notificationChannel.enableVibration(true);
-            manager.createNotificationChannel(notificationChannel);
-        }
-
-        Intent i = new Intent(getActivity(), MainActivity.class);
-        PendingIntent pemdingIntent = PendingIntent.getActivity(getActivity(),0,i,0);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity(), NOTIFICATION_CHANNEL_ID);
-
-        notificationBuilder.setAutoCancel(true)
-                .setContentIntent(pemdingIntent)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker("Hearty365")
-                //     .setPriority(Notification.PRIORITY_MAX)
-                .setContentTitle("PARKING NOTIFICATION")
-                .setContentText("Te notifico locooooo.")
-                .setContentInfo("Info");
-
-        manager.notify(1, notificationBuilder.build());
-
-*/
+        Toast.makeText(getActivity(),"Notificación programada a las " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
+        // con el método cancel de alarmManager puedo cancelar la notificación
+        //am.cancel(pemdingIntent);
         Log.d(TAG, "AQUIIIIIIIIII");
 
     }
