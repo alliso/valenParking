@@ -40,6 +40,7 @@
         <activity
             android:name=".ForgotPasswordActivity" />
 
+        <receiver android:name=".Services.AlarmReceiver"></receiver>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_key" />
