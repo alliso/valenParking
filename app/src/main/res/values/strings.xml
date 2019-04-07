@@ -46,5 +46,7 @@
     <string name="edit_profile_save_incorrect_string">No change has been made</string>
     <string name="edit_profile_image_title_string">Profile picture</string>
     <string name="edit_profile_image_message_string">Do you want to change your profile picture?</string>
+    <string name="edit_profile_gallery_not_take_photo_string">No image has been selected</string>
+    <string name="edit_profile_gallery_permission_denied_string">It is necessary to accept the permission of the gallery to take a picture</string>
 
 </resources>
