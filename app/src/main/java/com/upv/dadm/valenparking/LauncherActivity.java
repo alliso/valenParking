@@ -1,6 +1,7 @@
 package com.upv.dadm.valenparking;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,16 +25,23 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if(currentUser == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+
+                if(currentUser == null) {
+                    Intent intent = new Intent(LauncherActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(LauncherActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }, 1500);
+
     }
 }

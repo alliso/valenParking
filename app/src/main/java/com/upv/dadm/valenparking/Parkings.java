@@ -3,6 +3,7 @@ package com.upv.dadm.valenparking;
 public class Parkings {
     public String name;
     public String calle;
+    private boolean isSelected = false;
 
     public Parkings(String name, String calle){
         this.name = name;
@@ -25,6 +26,15 @@ public class Parkings {
 
     public void setCalle(String calle) {
         this.calle = calle;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+
+    public boolean isSelected() {
+        return isSelected;
     }
 }
 

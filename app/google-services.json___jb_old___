@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "652442408718",
+    "firebase_url": "https://valenparking-66ec4.firebaseio.com",
+    "project_id": "valenparking-66ec4",
+    "storage_bucket": "valenparking-66ec4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652442408718:android:f2e3de12bedb1f48",
+        "android_client_info": {
+          "package_name": "com.upv.dadm.valenparking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "652442408718-b469v2llvva3fnqrhs45fhepto2fsb6g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upv.dadm.valenparking",
+            "certificate_hash": "e10db919bfe921f10538441ef5b60d57305c76dd"
+          }
+        },
+        {
+          "client_id": "652442408718-miciqgck87cif4ck58p9hludm5r4p6lg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upv.dadm.valenparking",
+            "certificate_hash": "f2f66e1286aad38769add94833bd5ebca16ac4ba"
+          }
+        },
+        {
+          "client_id": "652442408718-hjib40psd8jomsl12o1pe2qnmqe9nbk5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upv.dadm.valenparking",
+            "certificate_hash": "ed43f884491a07568c27745465a2bec879ebe78b"
+          }
+        },
+        {
+          "client_id": "652442408718-2hgj492bvp7fbv6ujk2nl6utpauq6kiv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upv.dadm.valenparking",
+            "certificate_hash": "8af8d0657180cd4ab0cfe4a69c14d7bf616cf0e7"
+          }
+        },
+        {
+          "client_id": "652442408718-ip4d1930e84ulpbcovjr1fppa96cqcq8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrRMcAY5tncU5dYeD1XBbQttLGOCf_c0Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "652442408718-ip4d1930e84ulpbcovjr1fppa96cqcq8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
