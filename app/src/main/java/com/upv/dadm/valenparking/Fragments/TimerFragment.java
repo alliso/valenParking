@@ -7,9 +7,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -73,11 +75,12 @@ public class TimerFragment extends Fragment {
         calendar.set(Calendar.MINUTE, minute);
 
         Intent i = new Intent(getActivity(), AlarmReceiver.class);
+
         PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),1,i,0);
 
         AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-
-        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() /1000, pemdingIntent);
+        long updateInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() /1000, updateInterval, pemdingIntent);
 
         Toast.makeText(getActivity(),"Notificación programada a las " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
         // con el método cancel de alarmManager puedo cancelar la notificación
