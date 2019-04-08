@@ -1,25 +1,28 @@
 package com.upv.dadm.valenparking.Fragments;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.R;
 
-import java.text.DateFormat;
-import java.util.Calendar;
+import static android.content.Context.ALARM_SERVICE;
 
 public class TimerFragment extends Fragment {
 
@@ -29,11 +32,9 @@ public class TimerFragment extends Fragment {
 
     private TimePicker picker;
     private Button button;
-    private TextView text;
 
     private int hour;
     private int minute;
-    private CountDownTimer countDown;
 
     public TimerFragment(){ }
 
@@ -93,16 +94,17 @@ public class TimerFragment extends Fragment {
 
     public void disableChildren() {
 
-        Intent i = new Intent(getActivity(), MainActivity.class);
-        PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),0,i,0);
 
-        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        Intent i = new Intent(getActivity(), AlarmReceiver.class);
+        PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),1,i,0);
 
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() , 8000, pemdingIntent);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 15000, pemdingIntent);
 
 
-
-       /* NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        /*
+        NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -117,7 +119,7 @@ public class TimerFragment extends Fragment {
             manager.createNotificationChannel(notificationChannel);
         }
 
-        /*Intent i = new Intent(getActivity(), MainActivity.class);
+        Intent i = new Intent(getActivity(), MainActivity.class);
         PendingIntent pemdingIntent = PendingIntent.getActivity(getActivity(),0,i,0);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity(), NOTIFICATION_CHANNEL_ID);

@@ -21,6 +21,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     public void showNotification(Context context){
+
+
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
@@ -48,11 +50,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker("Hearty365")
                 //     .setPriority(Notification.PRIORITY_MAX)
-                .setContentTitle("Default notification")
-                .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .setContentTitle("PARKING NOTIFICATION")
+                .setContentText("Te quedan 5 minutos de parking.")
                 .setContentInfo("Info");
 
         manager.notify(1, notificationBuilder.build());
-
     }
 }
