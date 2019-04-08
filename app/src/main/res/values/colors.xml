@@ -18,4 +18,5 @@
     <color name="colorGoogleDark">#B92D21</color>
 
     <color name="secondColor">#7a7cff</color>
+    <color name="favouriteSelected">#e1f5fe</color>
 </resources>
