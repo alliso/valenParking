@@ -1,28 +1,25 @@
 package com.upv.dadm.valenparking.Fragments;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.R;
 
-import static android.content.Context.ALARM_SERVICE;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 public class TimerFragment extends Fragment {
 
@@ -32,9 +29,11 @@ public class TimerFragment extends Fragment {
 
     private TimePicker picker;
     private Button button;
+    private TextView text;
 
     private int hour;
     private int minute;
+    private CountDownTimer countDown;
 
     public TimerFragment(){ }
 
@@ -48,30 +47,62 @@ public class TimerFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hour = picker.getCurrentHour();
-                minute = picker.getCurrentMinute();
-
                 disableChildren();
+                changeUI();
+                startTimer();
             }
         });
+        text = view.findViewById(R.id.timerText);
+
+
 
         return view;
+    }
+
+    public void startTimer(){
+        hour = picker.getCurrentHour();
+        minute = picker.getCurrentMinute();
+
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = calendar.get(Calendar.MINUTE);
+
+        int milis = hour * 60 * 60 * 1000 + minute * 60 * 1000;
+        int currentMilis = currentHour * 60 * 60 * 1000 + currentMinute * 60 * 1000;
+
+        int diff = milis - currentMilis;
+
+        new CountDownTimer(diff, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int seconds = (int) (millisUntilFinished / 1000) % 60 ;
+                int minutes = (int) ((millisUntilFinished / (1000*60)) % 60);
+                int hours   = (int) ((millisUntilFinished / (1000*60*60)) % 24);
+                text.setText(hours + ":" + minutes);
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+
+
     }
 
 
     public void disableChildren() {
 
-        /*
         Intent i = new Intent(getActivity(), MainActivity.class);
         PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),0,i,0);
 
         AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() , 8000, pemdingIntent);
-        */
 
 
-        NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+       /* NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -86,7 +117,7 @@ public class TimerFragment extends Fragment {
             manager.createNotificationChannel(notificationChannel);
         }
 
-        Intent i = new Intent(getActivity(), MainActivity.class);
+        /*Intent i = new Intent(getActivity(), MainActivity.class);
         PendingIntent pemdingIntent = PendingIntent.getActivity(getActivity(),0,i,0);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity(), NOTIFICATION_CHANNEL_ID);
@@ -102,10 +133,16 @@ public class TimerFragment extends Fragment {
                 .setContentText("Te notifico locooooo.")
                 .setContentInfo("Info");
 
-        manager.notify(1, notificationBuilder.build());
+        manager.notify(1, notificationBuilder.build());*/
+    }
 
-
-        Log.d(TAG, "AQUIIIIIIIIII");
-
+    public void changeUI(){
+        if(picker.getVisibility() == View.INVISIBLE) {
+            picker.setVisibility(View.VISIBLE);
+            text.setVisibility(View.INVISIBLE);
+        } else {
+            picker.setVisibility(View.INVISIBLE);
+            text.setVisibility(View.VISIBLE);
+        }
     }
 }
