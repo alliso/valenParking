@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.upv.dadm.valenparking">
 
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_CALENDAR"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,9 +24,13 @@
             android:value="@string/google_key" />
 
         <activity
+            android:name=".EditProfileActivity">
+
+        </activity>
+        <activity
             android:name=".LauncherActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             android:screenOrientation="portrait">
-            <!--android:theme="@android:style/Theme.NoDisplay">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,9 +53,11 @@
             android:name=".ForgotPasswordActivity"
             android:screenOrientation="portrait"/>
 
-        <receiver android:name=".Services.AlarmReceiver" >
-        </receiver>
+        <receiver android:name=".Services.AlarmReceiver"></receiver>
 
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

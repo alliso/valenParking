@@ -55,7 +55,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.upv.dadm.valenparking.Adapters.CustomInfoWindowGoogleMap;
-import com.upv.dadm.valenparking.Adapters.PlaceAutocompleteAdapter;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.Pojo.GoogleMapInfoWindowData;
 import com.upv.dadm.valenparking.R;
@@ -106,8 +105,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private View view;
     private ProgressBar progressBar;
 
-    private PlaceAutocompleteAdapter placeAutocompleteAdapter;
-    private GoogleApiClient googleApiClient;
     private AutocompleteSupportFragment placeAutocompleteFragment;
 
 
