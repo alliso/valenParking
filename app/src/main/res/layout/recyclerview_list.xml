@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/quotation_list_calle"
-        style="@color/colorPrimary"
+        android:textColor="@color/colorMenuText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -22,7 +22,8 @@
 
     <TextView
         android:id="@+id/quotation_list_name"
-        style="@color/colorPrimaryDark"
+        android:textColor="@color/colorSecondaryText"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
