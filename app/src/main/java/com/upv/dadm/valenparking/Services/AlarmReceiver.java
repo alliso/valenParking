@@ -39,6 +39,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         Intent i = new Intent(context, MainActivity.class);
+        i.putExtra("key", R.id.main_menu_timer);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         PendingIntent pemdingIntent = PendingIntent.getActivity(context,0,i,0);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
