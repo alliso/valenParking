@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 
 import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.R;
+import com.upv.dadm.valenparking.Services.AlarmReceiver;
 
 import java.util.Calendar;
 
@@ -42,7 +42,6 @@ public class TimerFragment extends Fragment {
 
     private int hour;
     private int minute;
-    private CountDownTimer countDown;
 
     public TimerFragment(){ }
 
@@ -57,8 +56,12 @@ public class TimerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 disableChildren();
-                changeUI();
-                startTimer();
+                if(checkTimer() <= 0)
+                    Toast.makeText(getContext(),"Hora no valida", Toast.LENGTH_LONG).show();
+                else {
+                    startTimer(checkTimer());
+                    changeUI();
+                }
             }
         });
         text = view.findViewById(R.id.timerText);
@@ -68,7 +71,7 @@ public class TimerFragment extends Fragment {
         return view;
     }
 
-    public void startTimer(){
+    private int checkTimer() {
         hour = picker.getCurrentHour();
         minute = picker.getCurrentMinute();
 
@@ -79,11 +82,10 @@ public class TimerFragment extends Fragment {
         int milis = hour * 60 * 60 * 1000 + minute * 60 * 1000;
         int currentMilis = currentHour * 60 * 60 * 1000 + currentMinute * 60 * 1000;
 
-        int diff = milis - currentMilis;
+        return milis - currentMilis;
+    }
 
-        if(diff <= 0) {
-            Toast.makeText(getContext(),"Hora no valida", Toast.LENGTH_LONG).show();
-        } else {
+    public void startTimer(int diff){
             new CountDownTimer(diff, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -107,11 +109,6 @@ public class TimerFragment extends Fragment {
 
                 }
             }.start();
-        }
-
-
-
-
     }
 
 
@@ -136,5 +133,17 @@ public class TimerFragment extends Fragment {
         //am.cancel(pemdingIntent);
         Log.d(TAG, "AQUIIIIIIIIII");
 
+    }
+
+
+
+    public void changeUI(){
+        if(picker.getVisibility() == View.INVISIBLE) {
+            picker.setVisibility(View.VISIBLE);
+            text.setVisibility(View.INVISIBLE);
+        } else {
+            picker.setVisibility(View.INVISIBLE);
+            text.setVisibility(View.VISIBLE);
+        }
     }
 }
