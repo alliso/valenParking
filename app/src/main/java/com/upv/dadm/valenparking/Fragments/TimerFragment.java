@@ -1,28 +1,25 @@
 package com.upv.dadm.valenparking.Fragments;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.support.v4.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.R;
 
-import static android.content.Context.ALARM_SERVICE;
+import java.util.Calendar;
 
 public class TimerFragment extends Fragment {
 
@@ -32,9 +29,11 @@ public class TimerFragment extends Fragment {
 
     private TimePicker picker;
     private Button button;
+    private TextView text;
 
     private int hour;
     private int minute;
+    private CountDownTimer countDown;
 
     public TimerFragment(){ }
 
@@ -73,20 +72,35 @@ public class TimerFragment extends Fragment {
 
         int diff = milis - currentMilis;
 
-        new CountDownTimer(diff, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                int seconds = (int) (millisUntilFinished / 1000) % 60 ;
-                int minutes = (int) ((millisUntilFinished / (1000*60)) % 60);
-                int hours   = (int) ((millisUntilFinished / (1000*60*60)) % 24);
-                text.setText(hours + ":" + minutes);
-            }
+        if(diff <= 0) {
+            Toast.makeText(getContext(),"Hora no valida", Toast.LENGTH_LONG).show();
+        } else {
+            new CountDownTimer(diff, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    int seconds = (int) (millisUntilFinished / 1000) % 60 ;
+                    int minutes = (int) ((millisUntilFinished / (1000*60)) % 60);
+                    int hours   = (int) ((millisUntilFinished / (1000*60*60)) % 24);
 
-            @Override
-            public void onFinish() {
+                    String time = "";
+                    if(hours > 0)
+                        time = hours < 10 ? "0" + hours + ":" : hours + ":";
+                    if(minutes > 0)
+                        time += minutes < 10 ? "0" + minutes + ":" : minutes + ":";
+                    if(seconds > 0)
+                        time += seconds < 10 ? "0" + seconds : seconds;
 
-            }
-        }.start();
+                    text.setText(time);
+                }
+
+                @Override
+                public void onFinish() {
+
+                }
+            }.start();
+        }
+
+
 
 
     }
@@ -94,17 +108,16 @@ public class TimerFragment extends Fragment {
 
     public void disableChildren() {
 
+        Intent i = new Intent(getActivity(), MainActivity.class);
+        PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),0,i,0);
 
-        Intent i = new Intent(getActivity(), AlarmReceiver.class);
-        PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),1,i,0);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
-        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 15000, pemdingIntent);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() , 8000, pemdingIntent);
 
 
-        /*
-        NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+       /* NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -119,7 +132,7 @@ public class TimerFragment extends Fragment {
             manager.createNotificationChannel(notificationChannel);
         }
 
-        Intent i = new Intent(getActivity(), MainActivity.class);
+        /*Intent i = new Intent(getActivity(), MainActivity.class);
         PendingIntent pemdingIntent = PendingIntent.getActivity(getActivity(),0,i,0);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getActivity(), NOTIFICATION_CHANNEL_ID);
