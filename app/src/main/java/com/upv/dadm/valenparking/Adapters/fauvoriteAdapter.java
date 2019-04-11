@@ -54,7 +54,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
         aux = false;
         holder.tv_list_name.setText((data.get(position).getParkingName()));
         holder.tv_list_free.setText((String.valueOf(data.get(position).getCalle())));
-        holder.v.setBackgroundColor(parkings.isSelected() ? context.getResources().getColor(R.color.secondColor) : context.getResources().getColor(R.color.colorBgApp));
+        holder.v.setBackgroundColor(parkings.isSelected() ? context.getResources().getColor(R.color.favouriteSelected) : context.getResources().getColor(R.color.colorBgApp));
 
         for(Parkings p : data){
             //Log.v("prueba", String.valueOf(p.isSelected()));
@@ -71,7 +71,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
                     if(!aux) {
                         final Parkings parking = data.get(holder.getAdapterPosition());
                         parking.setSelected(!parking.isSelected());
-                        holder.lytParent.setBackgroundColor(parking.isSelected() ? context.getResources().getColor(R.color.secondColor) : context.getResources().getColor(R.color.colorBgApp));
+                        holder.lytParent.setBackgroundColor(parking.isSelected() ? context.getResources().getColor(R.color.favouriteSelected) : context.getResources().getColor(R.color.colorBgApp));
                         clickLongListener.onFavouriteLongClick();
                         notifyItemChanged(holder.getAdapterPosition());
 
@@ -87,7 +87,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
                     if(aux) {
                         final Parkings parking = data.get(holder.getAdapterPosition());
                         parking.setSelected(!parking.isSelected());
-                        holder.lytParent.setBackgroundColor(parking.isSelected() ? context.getResources().getColor(R.color.secondColor) : context.getResources().getColor(R.color.colorBgApp));
+                        holder.lytParent.setBackgroundColor(parking.isSelected() ? context.getResources().getColor(R.color.favouriteSelected) : context.getResources().getColor(R.color.colorBgApp));
                         clickShortListener.onFavouriteShortClick();
                         notifyItemChanged(holder.getAdapterPosition());
                     }
