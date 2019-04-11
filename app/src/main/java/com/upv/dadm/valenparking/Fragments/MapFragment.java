@@ -121,7 +121,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         favouriteParkings = new ArrayList<>();
 
         // Initialize places
-        Places.initialize(getContext(), getString(R.string.google_api_key));
+        Places.initialize(getContext(), getString(R.string.google_key));
 
         GetUserFav(new FavouriteFragment.MyCallback() {
             @Override
