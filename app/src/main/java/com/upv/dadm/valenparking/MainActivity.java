@@ -1,18 +1,11 @@
 package com.upv.dadm.valenparking;
 
-import android.net.Uri;
-import android.net.wifi.SupplicantState;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.upv.dadm.valenparking.Fragments.AccountFragment;
 import com.upv.dadm.valenparking.Fragments.FavouriteFragment;
 import com.upv.dadm.valenparking.Fragments.MapFragment;
@@ -28,8 +21,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getSupportActionBar().setTitle(getString(R.string.app_name));
 
         ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setOnNavigationItemSelectedListener(this);
 

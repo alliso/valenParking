@@ -1,9 +1,7 @@
 package com.upv.dadm.valenparking.Fragments;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.support.v4.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +9,15 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,6 +38,7 @@ public class TimerFragment extends Fragment {
 
     private TimePicker picker;
     private Button button;
+    private TextView text;
 
     private int hour;
     private int minute;
@@ -55,14 +55,60 @@ public class TimerFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hour = picker.getCurrentHour();
-                minute = picker.getCurrentMinute();
-
                 disableChildren();
+                if(checkTimer() <= 0)
+                    Toast.makeText(getContext(),"Hora no valida", Toast.LENGTH_LONG).show();
+                else {
+                    startTimer(checkTimer());
+                    changeUI();
+                }
             }
         });
+        text = view.findViewById(R.id.timerText);
+
+
 
         return view;
+    }
+
+    private int checkTimer() {
+        hour = picker.getCurrentHour();
+        minute = picker.getCurrentMinute();
+
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = calendar.get(Calendar.MINUTE);
+
+        int milis = hour * 60 * 60 * 1000 + minute * 60 * 1000;
+        int currentMilis = currentHour * 60 * 60 * 1000 + currentMinute * 60 * 1000;
+
+        return milis - currentMilis;
+    }
+
+    public void startTimer(int diff){
+            new CountDownTimer(diff, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    int seconds = (int) (millisUntilFinished / 1000) % 60 ;
+                    int minutes = (int) ((millisUntilFinished / (1000*60)) % 60);
+                    int hours   = (int) ((millisUntilFinished / (1000*60*60)) % 24);
+
+                    String time = "";
+                    if(hours > 0)
+                        time = hours < 10 ? "0" + hours + ":" : hours + ":";
+                    if(minutes > 0)
+                        time += minutes < 10 ? "0" + minutes + ":" : minutes + ":";
+                    if(seconds > 0)
+                        time += seconds < 10 ? "0" + seconds : seconds;
+
+                    text.setText(time);
+                }
+
+                @Override
+                public void onFinish() {
+
+                }
+            }.start();
     }
 
 
@@ -87,5 +133,17 @@ public class TimerFragment extends Fragment {
         //am.cancel(pemdingIntent);
         Log.d(TAG, "AQUIIIIIIIIII");
 
+    }
+
+
+
+    public void changeUI(){
+        if(picker.getVisibility() == View.INVISIBLE) {
+            picker.setVisibility(View.VISIBLE);
+            text.setVisibility(View.INVISIBLE);
+        } else {
+            picker.setVisibility(View.INVISIBLE);
+            text.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -6,6 +6,7 @@ public class GoogleMapInfoWindowData {
     private String address;
     private String places;
     private String type;
+    private boolean isFavourite;
 
     public String getName() {
         return name;
@@ -37,5 +38,13 @@ public class GoogleMapInfoWindowData {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isFavourite() {
+        return isFavourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        isFavourite = favourite;
     }
 }
