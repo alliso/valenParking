@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
 import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
@@ -66,6 +67,7 @@ public class FavouriteFragment extends Fragment {
     Boolean hideIcon = true;
     fauvoriteAdapter.OnFavouriteLongClickListener listener2;
     fauvoriteAdapter.OnFavouriteShortClickListener listener;
+    fauvoriteAdapter.OnShortClickGoToMapListener listener3;
     private ProgressBar progressBar;
     private TextView listavaciaMsg;
     String documentId = "";
@@ -111,10 +113,12 @@ public class FavouriteFragment extends Fragment {
             }
         };
 
+
+
         GetUserFav(new MyCallback() {
             @Override
             public void onCallback(JSONArray value) {
-                //Log.v("prueba", value.toString());
+
                 try {
                     for (int i = 0; i < value.length(); i++) {
                         //Log.v("prueba", value.getJSONObject(i).get("name").toString());
@@ -123,9 +127,23 @@ public class FavouriteFragment extends Fragment {
                         Parkings parking = new Parkings();
                         parking.setParkingName(value.getJSONObject(i).get("name").toString());
                         parking.setCalle(value.getJSONObject(i).get("address").toString());
+                        parking.setLat(Float.parseFloat(value.getJSONObject(i).get("lat").toString()));
+                        parking.setLon(Float.parseFloat(value.getJSONObject(i).get("lon").toString()));
                         listParkings.add(parking);
                     }
-                    adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
+
+                    listener3 = new fauvoriteAdapter.OnShortClickGoToMapListener() {
+                        @Override
+                        public void onShortClickGoToMap() {
+
+                            Parkings lastClicked = adapter.getLastClickedParking();
+                            MainActivity activity = (MainActivity) getActivity();
+                            activity.openMap(lastClicked.getLat(), lastClicked.getLon());
+
+                        }
+                    };
+
+                    adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener, listener3);
                     recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
                     recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                     DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), HORIZONTAL);
@@ -137,40 +155,6 @@ public class FavouriteFragment extends Fragment {
         });
         return view;
     }
-    /*public String getUserUID() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = "";
-        if (user != null) {
-            uid = user.getUid();
-
-            Log.v("prueba", uid);
-        }
-        return uid;
-    }*/
-
-    /*public void recuperarFav(final MyCallback myCallback){
-        String user = getUserUID();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users").child(user);
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //String valor = dataSnapshot.getValue();
-                String res = dataSnapshot.child("fav").child("name").getValue().toString();
-                Log.v("prueba", res);
-                myCallback.onCallback(res);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("error", "Error!", databaseError.toException());
-            }
-
-        });
-
-    }*/
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -189,7 +173,7 @@ public class FavouriteFragment extends Fragment {
                 listavaciaMsg.setVisibility(view.VISIBLE);
             }
             listParkings = listParkingsAux;
-            adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
+            adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener, listener3);
             recyclerview_parkings.setAdapter(adapter);
 
             updateUserFav();
@@ -243,6 +227,8 @@ public class FavouriteFragment extends Fragment {
                 JSONObject park = new JSONObject();
                 park.put("name", p.getParkingName());
                 park.put("address", p.getCalle());
+                park.put("lat", p.getLat());
+                park.put("lon", p.getLon());
 
                 newList.put(park);
             }

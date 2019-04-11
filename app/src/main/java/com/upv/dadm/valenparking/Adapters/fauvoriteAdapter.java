@@ -24,19 +24,22 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
 
 
     private List<Parkings> data;
+    private Parkings lastClickedParking;
     private Context context;
     private int layout;
     boolean aux;
     private OnFavouriteLongClickListener clickLongListener;
     private OnFavouriteShortClickListener clickShortListener;
+    private OnShortClickGoToMapListener clickMapListener;
 
-    public fauvoriteAdapter(Context context, int resource, List<Parkings> data, OnFavouriteLongClickListener LongClicklistener, OnFavouriteShortClickListener shortClickListener) {
+    public fauvoriteAdapter(Context context, int resource, List<Parkings> data, OnFavouriteLongClickListener LongClicklistener, OnFavouriteShortClickListener shortClickListener, OnShortClickGoToMapListener clickMapListener) {
         super();
         this.data = data;
         this.context = context;
         this.layout = resource;
         this.clickLongListener = LongClicklistener;
         this.clickShortListener = shortClickListener;
+        this.clickMapListener = clickMapListener;
 
     }
 
@@ -57,7 +60,6 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
         holder.v.setBackgroundColor(parkings.isSelected() ? context.getResources().getColor(R.color.favouriteSelected) : context.getResources().getColor(R.color.colorBgApp));
 
         for(Parkings p : data){
-            //Log.v("prueba", String.valueOf(p.isSelected()));
             if(p.isSelected()) {
                 aux = true;
             }
@@ -94,6 +96,22 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
                 }
             });
 
+            holder.lytParent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(!aux) {
+                        final Parkings parking = data.get(holder.getAdapterPosition());
+
+                        setLastClickedParking(parking);
+
+
+                        clickMapListener.onShortClickGoToMap();
+                    }
+                }
+            });
+
+
+
     }
 
     @Override
@@ -124,5 +142,15 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
         void onFavouriteShortClick();
     }
 
+    public interface OnShortClickGoToMapListener{
+        void onShortClickGoToMap();
+    }
 
+    public Parkings getLastClickedParking() {
+        return lastClickedParking;
+    }
+
+    public void setLastClickedParking(Parkings lastClickedParking) {
+        this.lastClickedParking = lastClickedParking;
+    }
 }

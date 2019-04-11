@@ -7,6 +7,7 @@ public class Parkings {
     public float lat;
     public float lon;
 
+
     public Parkings(String name, String calle, float lat, float lon){
         this.name = name;
         this.calle = calle;
