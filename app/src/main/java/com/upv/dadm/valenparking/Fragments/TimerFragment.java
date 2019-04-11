@@ -21,11 +21,7 @@ import com.google.gson.Gson;
 import com.upv.dadm.valenparking.R;
 import com.upv.dadm.valenparking.Services.AlarmReceiver;
 
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
-
-import io.opencensus.stats.Aggregation;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -66,9 +62,8 @@ public class TimerFragment extends Fragment {
                 editor.putString("timerMilis", hour * 60 * 60 * 1000 + minute * 60 * 1000 + "");
                 editor.apply();
                 disableChildren();
-                if (checkTimer() <= 0 && button.getText().equals("Borrar Hora")){
+                if (checkTimer() <= 0 || button.getText().equals("Borrar Hora")){
                     Toast.makeText(getContext(), "Hora no valida", Toast.LENGTH_LONG).show();
-                    Log.d(TAG, !button.getText().equals("Borrar Hora") + "");
                 } else {
                     startTimer(checkTimer());
                     changeUI();
@@ -108,7 +103,8 @@ public class TimerFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         int currentMinute = calendar.get(Calendar.MINUTE);
-        int currentMilis = currentHour * 60 * 60 * 1000 + currentMinute * 60 * 1000;
+        int currentSecond = calendar.get(Calendar.SECOND);
+        int currentMilis = currentHour * 60 * 60 * 1000 + currentMinute * 60 * 1000 + currentSecond * 1000;
 
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
@@ -119,9 +115,10 @@ public class TimerFragment extends Fragment {
     }
 
     public void startTimer(int diff){
-        Log.d(TAG, diff +"");
-
-        countdown = new CountDownTimer(diff, 1000) {
+        if(diff > 0) {
+            Log.d(TAG, diff +"INSIDEEEEE");
+            if(countdown != null) countdown.cancel();
+            countdown = new CountDownTimer(diff, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     int seconds = (int) (millisUntilFinished / 1000) % 60 ;
@@ -145,12 +142,8 @@ public class TimerFragment extends Fragment {
                 }
             };
             countdown.start();
+        } else Toast.makeText(getContext(),"Hora no válida",Toast.LENGTH_LONG);
     }
-
-    private void saveDate(){
-
-    }
-
 
     public void disableChildren() {
         // poner el tiempo a una hora determinada
