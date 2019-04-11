@@ -38,6 +38,12 @@ public class AlarmReceiver extends BroadcastReceiver {
             manager.createNotificationChannel(notificationChannel);
         }
 
+        //cancel intent
+        Intent intentCancel = new Intent(context, CancelNotification.class);
+        intentCancel.setAction("CANCEL");
+        intentCancel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context, 1, intentCancel, PendingIntent.FLAG_CANCEL_CURRENT);
+
         Intent i = new Intent(context, MainActivity.class);
         i.putExtra("key", R.id.main_menu_timer);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -54,9 +60,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setTicker("Hearty365")
                 //     .setPriority(Notification.PRIORITY_MAX)
                 .setContentTitle("PARKING NOTIFICATION")
-                .setContentText("Te quedan 5 minutos de parking.")
-                .setContentInfo("Info");
+                .setContentText("Te quedan 30 minutos de parking.")
+                .setContentInfo("Info")
+                .addAction(R.drawable.button_ripple_google, "Cancel", pendingIntentCancel);
 
-        manager.notify(1, notificationBuilder.build());
+        manager.notify(11111, notificationBuilder.build());
     }
 }

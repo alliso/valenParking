@@ -52,6 +52,11 @@
         </activity>
 
         <receiver android:name=".Services.AlarmReceiver"></receiver>
+        <receiver android:name=".Services.CancelNotification">
+            <intent-filter>
+                <action android:name="CANCEL" />
+            </intent-filter>
+        </receiver>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
