@@ -58,7 +58,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), EditProfileActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -76,4 +76,22 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 0 && resultCode == 0){
+            TextView edtxtUserName = (TextView) view.findViewById(R.id.account_useName);
+            imgUser = (ImageView) view.findViewById(R.id.account_userPicture);
+            String Name = data.getStringExtra("Name");
+            String Image = data.getStringExtra("Image");
+            if(Name != null) edtxtUserName.setText(Name);
+            if(Image != null) {
+                Picasso.with(getContext()).load(Image)
+                        .resize(300,300)
+                        .centerCrop()
+                        .transform(new CircleTransform())
+                        .into(imgUser);
+            }
+        }
+    }
 }
