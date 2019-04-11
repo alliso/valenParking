@@ -59,10 +59,8 @@ public class TimerFragment extends Fragment {
             public void onClick(View v) {
                 hour = picker.getCurrentHour();
                 minute = picker.getCurrentMinute();
-                editor.putString("timerMilis", hour * 60 * 60 * 1000 + minute * 60 * 1000 + "");
-                editor.apply();
                 disableChildren();
-                if (checkTimer() <= 0 || button.getText().equals("Borrar Hora")){
+                if (checkTimer() <= 0){
                     Toast.makeText(getContext(), "Hora no valida", Toast.LENGTH_LONG).show();
                 } else {
                     startTimer(checkTimer());
@@ -110,6 +108,7 @@ public class TimerFragment extends Fragment {
         calendar.set(Calendar.MINUTE, minute);
 
         editor.putString("timerCalendar", new Gson().toJson(calendar) );
+        editor.apply();
 
         return milis - currentMilis;
     }
@@ -132,6 +131,8 @@ public class TimerFragment extends Fragment {
                         time += minutes < 10 ? "0" + minutes + ":" : minutes + ":";
                     if(seconds > 0)
                         time += seconds < 10 ? "0" + seconds : seconds;
+                    if(seconds == 0)
+                        time += "00";
 
                     text.setText(time);
                 }
@@ -139,6 +140,7 @@ public class TimerFragment extends Fragment {
                 @Override
                 public void onFinish() {
                     editor.putString("timerCalendar","null");
+                    editor.apply();
                 }
             };
             countdown.start();

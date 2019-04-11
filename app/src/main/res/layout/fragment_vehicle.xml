@@ -24,7 +24,7 @@
 
     <EditText
         android:id="@+id/vehicleEditText"
-        android:hint="Escribe una descripción de donde has aparcado"
+        android:hint="@string/vehicle_edit_text_string"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -91,7 +91,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Borrar"
+        android:text="@string/vehicle_delete_button_string"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

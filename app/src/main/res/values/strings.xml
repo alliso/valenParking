@@ -57,4 +57,15 @@
     <string name="edit_profile_gallery_not_take_photo_string">No image has been selected</string>
     <string name="edit_profile_gallery_permission_denied_string">It is necessary to accept the permission of the gallery to take a picture</string>
 
+
+    <!-- Vehicle fragment -->
+    <string name="vehicle_delete_button_string">Delete</string>
+    <string name="vehicle_edit_text_string">Write a short description about your parking</string>
+    <string name="vehicle_not_known_street_string">Unknown street</string>
+    <string name="vehicle_cant_get_location_string">We can not get the location</string>
+
+
+    <!-- common strings -->
+    <string name="connection_failed_string">Connection failed</string>
+
 </resources>

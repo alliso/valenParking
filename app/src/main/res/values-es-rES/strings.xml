@@ -6,4 +6,9 @@
     <string name="main_menu_map_string">Mapa</string>
     <string name="main_menu_vehicle_string">Mi vehiculo</string>
     <string name="main_menu_account_string">Perfil</string>
+    <string name="vehicle_delete_button_string">Borrar</string>
+    <string name="vehicle_edit_text_string">Escribe una descripción de donde has aparcado</string>
+    <string name="vehicle_not_known_street_string">Calle desconocida</string>
+    <string name="vehicle_cant_get_location_string">No podemos obtener la localización</string>
+    <string name="connection_failed_string">Conexión fallida</string>
 </resources>
