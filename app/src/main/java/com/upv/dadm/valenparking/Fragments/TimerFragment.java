@@ -1,17 +1,13 @@
 package com.upv.dadm.valenparking.Fragments;
 
 import android.app.AlarmManager;
-import android.support.v4.app.Fragment;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +17,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.upv.dadm.valenparking.MainActivity;
+import com.google.gson.Gson;
 import com.upv.dadm.valenparking.R;
 import com.upv.dadm.valenparking.Services.AlarmReceiver;
 
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 
-import static android.Manifest.permission_group.CALENDAR;
+import io.opencensus.stats.Aggregation;
+
 import static android.content.Context.ALARM_SERVICE;
 
 public class TimerFragment extends Fragment {
@@ -40,8 +39,12 @@ public class TimerFragment extends Fragment {
     private Button button;
     private TextView text;
 
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+
     private int hour;
     private int minute;
+    private CountDownTimer countdown;
 
     public TimerFragment(){ }
 
@@ -50,15 +53,23 @@ public class TimerFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_timer, null);
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        editor = prefs.edit();
+
         picker = view.findViewById(R.id.timerPicker);
         button = view.findViewById(R.id.timerButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hour = picker.getCurrentHour();
+                minute = picker.getCurrentMinute();
+                editor.putString("timerMilis", hour * 60 * 60 * 1000 + minute * 60 * 1000 + "");
+                editor.apply();
                 disableChildren();
-                if(checkTimer() <= 0)
-                    Toast.makeText(getContext(),"Hora no valida", Toast.LENGTH_LONG).show();
-                else {
+                if (checkTimer() <= 0 && button.getText().equals("Borrar Hora")){
+                    Toast.makeText(getContext(), "Hora no valida", Toast.LENGTH_LONG).show();
+                    Log.d(TAG, !button.getText().equals("Borrar Hora") + "");
+                } else {
                     startTimer(checkTimer());
                     changeUI();
                 }
@@ -66,27 +77,51 @@ public class TimerFragment extends Fragment {
         });
         text = view.findViewById(R.id.timerText);
 
+        if(prefs.getString("timerCalendar","null").equals("null")){
+            button.setText("Guardar hora");
+            picker.setVisibility(View.VISIBLE);
+            text.setVisibility(View.INVISIBLE);
+        } else {
+            Gson gson = new Gson();
+            Calendar prefsCalendar = gson.fromJson(prefs.getString("timerCalendar","null"),Calendar.class);
+            Calendar currentCalendar = Calendar.getInstance();
+            if(prefsCalendar.after(currentCalendar)) {
+                hour = prefsCalendar.get(Calendar.HOUR_OF_DAY);
+                minute = prefsCalendar.get(Calendar.MINUTE);
+                button.setText("Borrar hora");
+                picker.setVisibility(View.INVISIBLE);
+                text.setVisibility(View.VISIBLE);
+                startTimer(checkTimer());
+            } else {
+                button.setText("Guardar hora");
+                picker.setVisibility(View.VISIBLE);
+                text.setVisibility(View.INVISIBLE);
+            }
+        }
 
 
         return view;
     }
 
     private int checkTimer() {
-        hour = picker.getCurrentHour();
-        minute = picker.getCurrentMinute();
-
+        int milis = hour * 60 * 60 * 1000 + minute * 60 * 1000;
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         int currentMinute = calendar.get(Calendar.MINUTE);
-
-        int milis = hour * 60 * 60 * 1000 + minute * 60 * 1000;
         int currentMilis = currentHour * 60 * 60 * 1000 + currentMinute * 60 * 1000;
+
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+
+        editor.putString("timerCalendar", new Gson().toJson(calendar) );
 
         return milis - currentMilis;
     }
 
     public void startTimer(int diff){
-            new CountDownTimer(diff, 1000) {
+        Log.d(TAG, diff +"");
+
+        countdown = new CountDownTimer(diff, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     int seconds = (int) (millisUntilFinished / 1000) % 60 ;
@@ -106,14 +141,18 @@ public class TimerFragment extends Fragment {
 
                 @Override
                 public void onFinish() {
-
+                    editor.putString("timerCalendar","null");
                 }
-            }.start();
+            };
+            countdown.start();
+    }
+
+    private void saveDate(){
+
     }
 
 
     public void disableChildren() {
-
         // poner el tiempo a una hora determinada
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -141,9 +180,11 @@ public class TimerFragment extends Fragment {
         if(picker.getVisibility() == View.INVISIBLE) {
             picker.setVisibility(View.VISIBLE);
             text.setVisibility(View.INVISIBLE);
+            button.setText("Guardar hora");
         } else {
             picker.setVisibility(View.INVISIBLE);
             text.setVisibility(View.VISIBLE);
+            button.setText("Borrar hora");
         }
     }
 }
