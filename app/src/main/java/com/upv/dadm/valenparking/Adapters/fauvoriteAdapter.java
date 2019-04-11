@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.upv.dadm.valenparking.Fragments.FavouriteFragment;
+import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
 
@@ -30,16 +31,14 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
     boolean aux;
     private OnFavouriteLongClickListener clickLongListener;
     private OnFavouriteShortClickListener clickShortListener;
-    private OnShortClickGoToMapListener clickMapListener;
 
-    public fauvoriteAdapter(Context context, int resource, List<Parkings> data, OnFavouriteLongClickListener LongClicklistener, OnFavouriteShortClickListener shortClickListener, OnShortClickGoToMapListener clickMapListener) {
+    public fauvoriteAdapter(Context context, int resource, List<Parkings> data, OnFavouriteLongClickListener LongClicklistener, OnFavouriteShortClickListener shortClickListener) {
         super();
         this.data = data;
         this.context = context;
         this.layout = resource;
         this.clickLongListener = LongClicklistener;
         this.clickShortListener = shortClickListener;
-        this.clickMapListener = clickMapListener;
 
     }
 
@@ -92,25 +91,16 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
                         holder.lytParent.setBackgroundColor(parking.isSelected() ? context.getResources().getColor(R.color.favouriteSelected) : context.getResources().getColor(R.color.colorBgApp));
                         clickShortListener.onFavouriteShortClick();
                         notifyItemChanged(holder.getAdapterPosition());
-                    }
-                }
-            });
-
-            holder.lytParent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(!aux) {
+                    }else {
                         final Parkings parking = data.get(holder.getAdapterPosition());
 
                         setLastClickedParking(parking);
-
-
-                        clickMapListener.onShortClickGoToMap();
+                        MainActivity activity = (MainActivity) context;
+                        holder.lytParent.setBackgroundColor(context.getResources().getColor(R.color.favouriteSelected));
+                        activity.openMap(parking.getLat(), parking.getLon());
                     }
                 }
             });
-
-
 
     }
 

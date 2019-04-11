@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,11 +68,10 @@ public class FavouriteFragment extends Fragment {
     Boolean hideIcon = true;
     fauvoriteAdapter.OnFavouriteLongClickListener listener2;
     fauvoriteAdapter.OnFavouriteShortClickListener listener;
-    fauvoriteAdapter.OnShortClickGoToMapListener listener3;
     private ProgressBar progressBar;
     private TextView listavaciaMsg;
     String documentId = "";
-
+    FloatingActionButton fab;
 
     public FavouriteFragment(){ }
 
@@ -85,15 +85,31 @@ public class FavouriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_favourite, null);
 
-        setHasOptionsMenu(true);
+
+        view = inflater.inflate(R.layout.fragment_favourite, null);
+        fab = view.findViewById(R.id.delete_favs);
+        fab.hide();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialogFragment DialogFragment = myDialogFragment.getInstance(getString(R.string.favourite_dialog_delete_all_msg));
+                Bundle args = new Bundle();
+                args.putString("click", "all");
+                DialogFragment.setArguments(args);
+                DialogFragment.setTargetFragment(getFragmentManager().findFragmentByTag("FavouriteFragment"), 0);
+                DialogFragment.show(getFragmentManager(), "MyDialogFragment");
+            }
+        });
+        //setHasOptionsMenu(true);
 
 
         listener2 = new fauvoriteAdapter.OnFavouriteLongClickListener() {
             @Override
             public void onFavouriteLongClick() {
-                fav_menu.findItem(R.id.menu_delete_all_quotations).setVisible(hideIcon);
+                //fav_menu.findItem(R.id.delete_favs).setVisible(hideIcon);
+                if(hideIcon) fab.show();
 
             }
         };
@@ -108,10 +124,13 @@ public class FavouriteFragment extends Fragment {
                     }
                 }
                 if(!aux){
-                    fav_menu.findItem(R.id.menu_delete_all_quotations).setVisible(!hideIcon);
+                    //fav_menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
+                    if(!hideIcon) fab.hide();
                 }
             }
         };
+
+
 
 
 
@@ -132,18 +151,7 @@ public class FavouriteFragment extends Fragment {
                         listParkings.add(parking);
                     }
 
-                    listener3 = new fauvoriteAdapter.OnShortClickGoToMapListener() {
-                        @Override
-                        public void onShortClickGoToMap() {
-
-                            Parkings lastClicked = adapter.getLastClickedParking();
-                            MainActivity activity = (MainActivity) getActivity();
-                            activity.openMap(lastClicked.getLat(), lastClicked.getLon());
-
-                        }
-                    };
-
-                    adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener, listener3);
+                    adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
                     recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
                     recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                     DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), HORIZONTAL);
@@ -169,11 +177,12 @@ public class FavouriteFragment extends Fragment {
                 }
             }
             if(cont == listParkings.size()) {
-                fav_menu.findItem(R.id.menu_delete_all_quotations).setVisible(!hideIcon);
+                //fav_menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
+                if(!hideIcon) fab.hide();
                 listavaciaMsg.setVisibility(view.VISIBLE);
             }
             listParkings = listParkingsAux;
-            adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener, listener3);
+            adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
             recyclerview_parkings.setAdapter(adapter);
 
             updateUserFav();
@@ -240,10 +249,10 @@ public class FavouriteFragment extends Fragment {
         void onCallback(JSONArray value);
     }
 
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch(item.getItemId()){
-            case R.id.menu_delete_all_quotations:
+            case R.id.delete_favs:
                 myDialogFragment DialogFragment = myDialogFragment.getInstance(getString(R.string.favourite_dialog_delete_all_msg));
                 Bundle args = new Bundle();
                 args.putString("click", "all");
@@ -255,12 +264,12 @@ public class FavouriteFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.menu_favourite, menu);
-        menu.findItem(R.id.menu_delete_all_quotations).setVisible(!hideIcon);
+        menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_favourites);
         listavaciaMsg = (TextView) view.findViewById(R.id.empty_fav_msg);
         listavaciaMsg.setText(R.string.empty_favourite_msg);
@@ -268,6 +277,6 @@ public class FavouriteFragment extends Fragment {
         progressBar.setVisibility(view.VISIBLE);
         fav_menu = menu;
         super.onCreateOptionsMenu(menu,menuInflater);
-    }
+    }*/
 
 }
