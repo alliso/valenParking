@@ -1,10 +1,10 @@
 package com.upv.dadm.valenparking;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import com.upv.dadm.valenparking.Fragments.AccountFragment;
 import com.upv.dadm.valenparking.Fragments.FavouriteFragment;
@@ -21,18 +21,31 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Bundle extras = getIntent().getExtras();
 
         ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setOnNavigationItemSelectedListener(this);
 
 
         //que se muestre por defecto MapFragment al entrar en la aplicación
         if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_fragment, new MapFragment(), "MapFragment")
-                    .commit();
-            ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
+            if (extras != null ) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment, new TimerFragment(), "TimerFragment")
+                        .commit();
+                ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_timer);
+
+            } else {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment, new MapFragment(), "MapFragment")
+                        .commit();
+                ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
+            }
+
         } else {
+
+
             tag = savedInstanceState.getString("tagOfFragment");
             fragment = getSupportFragmentManager().findFragmentByTag(tag);
             getSupportFragmentManager()
