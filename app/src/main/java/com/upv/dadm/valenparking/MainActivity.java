@@ -6,6 +6,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.upv.dadm.valenparking.Fragments.AccountFragment;
 import com.upv.dadm.valenparking.Fragments.FavouriteFragment;
 import com.upv.dadm.valenparking.Fragments.MapFragment;
@@ -120,5 +125,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .replace(R.id.main_fragment, fragment, tag)
                 .commit();
         return true;
+    }
+
+    public void openMap(float lat, float lon){
+        tag = "MapFragment";
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        if (mapFragment == null) {
+            mapFragment = new MapFragment();
+        }
+        mapFragment.moveCameraFromFavourites(new LatLng(lat, lon), 20f, "lugar seleccionado");
+        ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, mapFragment, tag)
+                .commit();
+
+
+
     }
 }
