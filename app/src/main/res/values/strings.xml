@@ -40,7 +40,7 @@
     <string name="favourite_dialog_option_cancel">CANCEL</string>
     <string name="favourite_dialog_option_ok">OK</string>
     <string name="favourite_dialog_delete_all_msg">Are you sure that you want to delete ALL your favourite quotations?</string>
-    <string name="favourite_dialog_delete_all_title">Delete All Favourites</string>
+    <string name="favourite_dialog_delete_all_title">Do you want to delete the seleccted parkings?</string>
     <string name="empty_favourite_msg">No favourites to show</string>
     <!--account fragment-->
     <string name="account_log_out_string">Log out</string>

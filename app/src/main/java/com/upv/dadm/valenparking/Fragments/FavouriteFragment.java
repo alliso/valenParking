@@ -90,6 +90,11 @@ public class FavouriteFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_favourite, null);
         fab = view.findViewById(R.id.delete_favs);
         fab.hide();
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_favourites);
+        listavaciaMsg = (TextView) view.findViewById(R.id.empty_fav_msg);
+        progressBar.setVisibility(view.VISIBLE);
+        listavaciaMsg.setText(R.string.empty_favourite_msg);
+        listavaciaMsg.setVisibility(view.INVISIBLE);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +105,7 @@ public class FavouriteFragment extends Fragment {
                 DialogFragment.setArguments(args);
                 DialogFragment.setTargetFragment(getFragmentManager().findFragmentByTag("FavouriteFragment"), 0);
                 DialogFragment.show(getFragmentManager(), "MyDialogFragment");
+
             }
         });
         //setHasOptionsMenu(true);
@@ -109,7 +115,7 @@ public class FavouriteFragment extends Fragment {
             @Override
             public void onFavouriteLongClick() {
                 //fav_menu.findItem(R.id.delete_favs).setVisible(hideIcon);
-                if(hideIcon) fab.show();
+                fab.show();
 
             }
         };
@@ -125,7 +131,7 @@ public class FavouriteFragment extends Fragment {
                 }
                 if(!aux){
                     //fav_menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
-                    if(!hideIcon) fab.hide();
+                    fab.hide();
                 }
             }
         };
@@ -178,13 +184,13 @@ public class FavouriteFragment extends Fragment {
             }
             if(cont == listParkings.size()) {
                 //fav_menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
-                if(!hideIcon) fab.hide();
+
                 listavaciaMsg.setVisibility(view.VISIBLE);
             }
             listParkings = listParkingsAux;
             adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
             recyclerview_parkings.setAdapter(adapter);
-
+            fab.hide();
             updateUserFav();
 
         }
