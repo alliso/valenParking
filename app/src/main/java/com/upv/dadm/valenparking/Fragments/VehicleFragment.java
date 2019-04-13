@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.gson.Gson;
 import com.upv.dadm.valenparking.R;
 
 import java.io.IOException;
@@ -145,14 +143,11 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
                     .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-                            Log.d(TAG,"AQUIIIIIIIIII");
-
                             if (location != null) {
                                 Geocoder geocoder = new Geocoder(getContext());
                                 try {
                                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),  location.getLongitude(),1);
                                     if(addresses.size() > 0) {
-                                        Log.d(TAG,"HOLA");
                                         locationStreet = "" + addresses.get(0).getAddressLine(0);
                                         locationDescription = descrEdit.getText() + "";
                                         locationCoord =  "http://maps.google.com/maps?daddr=" + location.getLatitude() + "," + location.getLongitude() + " (" + "Tu coche" + ")";
@@ -161,20 +156,20 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
                                         editor.putString("myLocationCoord", locationCoord);
                                         editor.apply();
                                     } else {
-                                        Toast.makeText(getContext(),"No sabemos en que calle estas", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(),getString(R.string.vehicle_not_known_street_string), Toast.LENGTH_LONG).show();
                                     }
                                 }catch (IOException e) {
                                     e.printStackTrace();
                                 }
                             } else {
-                                Toast.makeText(getContext(),"No puedo obtener la localización", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(),getString(R.string.vehicle_cant_get_location_string), Toast.LENGTH_LONG).show();
                             }
                             updateUi();
                         }
                     }).addOnFailureListener(getActivity(), new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(),"No sabemos en que calle estas", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),getString(R.string.vehicle_not_known_street_string), Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -188,7 +183,6 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     public void openMaps(){
-        Log.d(TAG,locationCoord);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(locationCoord));
         getContext().startActivity(intent);
     }
@@ -218,7 +212,7 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "Connection Failed");
+        Toast.makeText(getContext(),getString(R.string.connection_failed_string), Toast.LENGTH_LONG);
     }
 
     private void updateUi(){

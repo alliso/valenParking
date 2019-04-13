@@ -1,38 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent">
+    android:background="@color/colorBgApp"
+    android:fillViewport="true">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-        <!-- <fragment
-            android:id="@+id/map_fragment"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" /> -->
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <FrameLayout
-            android:id="@+id/map_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <!-- <fragment
+                android:id="@+id/map_fragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" /> -->
 
-        <ProgressBar
-            android:id="@+id/map_progress_bar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
+            <FrameLayout
+                android:id="@+id/map_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/map_search_bar_cv"
@@ -51,8 +48,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-        </android.support.v7.widget.CardView>
+                <fragment
+                    android:id="@+id/map_place_autocomplete"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
+            </android.support.v7.widget.CardView>
 
         <ImageView
             android:id="@+id/map_ic_gps"
@@ -65,40 +67,52 @@
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/ic_gps" />
 
-<!--        <RelativeLayout
-            android:id="@+id/map_search_bar_rl"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_below="@id/map_ic_gps"
-            android:elevation="10dp"
-            android:background="@drawable/white_border">
-
-
             <ImageView
-                android:id="@+id/map_search_bar_icon"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_magnify" />
+                android:id="@+id/map_ic_gps"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/map_search_bar_cv"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_gps" />
 
-            <AutoCompleteTextView
-                android:id="@+id/map_search_bar_tv"
+            <!--        <RelativeLayout
+                android:id="@+id/map_search_bar_rl"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/map_search_bar_icon"
-                android:layout_centerVertical="true"
-                android:textSize="15sp"
-                android:textColor="#000"
-                android:background="@null"
-                android:hint="Enter Address, City or Zip Code"
-                android:imeOptions="actionSearch"/>
-        </RelativeLayout>-->
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@id/map_ic_gps"
+                android:elevation="10dp"
+                android:background="@drawable/white_border">
 
-    </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/map_search_bar_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_magnify" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/map_search_bar_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/map_search_bar_icon"
+                    android:layout_centerVertical="true"
+                    android:textSize="15sp"
+                    android:textColor="#000"
+                    android:background="@null"
+                    android:hint="Enter Address, City or Zip Code"
+                    android:imeOptions="actionSearch"/>
+            </RelativeLayout>-->
+
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
