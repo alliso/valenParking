@@ -47,7 +47,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             {
                 if(isValidEmail(email)){
                     mAuth.sendPasswordResetEmail(email);
-                    Toast.makeText(ForgotPasswordActivity.this, getString(R.string.forgot_email_string), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgotPasswordActivity.this, getString(R.string.forgot_email_string), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
