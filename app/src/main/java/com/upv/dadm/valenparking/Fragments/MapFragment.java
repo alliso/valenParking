@@ -107,8 +107,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     private AutocompleteSupportFragment placeAutocompleteFragment;
 
+    boolean venirDefavoritos = false;
+    LatLng latLngFavourite;
+
+
 
     public MapFragment() {
+        venirDefavoritos = false;
     }
 
     @Override
@@ -121,7 +126,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         favouriteParkings = new ArrayList<>();
 
         // Initialize places
-        Places.initialize(getContext(), getString(R.string.google_api_key));
+        Places.initialize(getContext(), getString(R.string.google_key));
 
         GetUserFav(new FavouriteFragment.MyCallback() {
             @Override
@@ -260,6 +265,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     public void moveCamera(LatLng latLng, float zoom, String title) {
+
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 /*
         if (title != "My Location") {
@@ -274,49 +280,56 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
-        map = googleMap;
+    public void onMapReady(GoogleMap googleMap) {
 
+        map = googleMap;
 
         initFragment();
 
         addMarkers();
 
-        getLocationPermission();
-
-        getDeviceLocation();
-
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            map.setMyLocationEnabled(true);
-            map.getUiSettings().setMyLocationButtonEnabled(false);
-        }
-
         CustomInfoWindowGoogleMap customInfoWindow = new CustomInfoWindowGoogleMap(getContext());
         map.setInfoWindowAdapter(customInfoWindow);
 
-        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                if (!((GoogleMapInfoWindowData)marker.getTag()).isFavourite()) {
-                    GoogleMapInfoWindowData infoWindow = new GoogleMapInfoWindowData();
-                    infoWindow = (GoogleMapInfoWindowData) marker.getTag();
-                    Toast.makeText(getContext(), "Has añadido '" + infoWindow.getName() + "' a favoritos", Toast.LENGTH_SHORT).show();
-                    infoWindow.setFavourite(true);
-                    marker.hideInfoWindow();
-                    marker.showInfoWindow();
+        if(!venirDefavoritos) {
 
-                    AddToFavourites(marker);
-                } else {
-                    Toast.makeText(getContext(), "Este parking ya se encuentra en su lista de favoritos", Toast.LENGTH_SHORT).show();
-                }
 
+            getLocationPermission();
+
+            getDeviceLocation();
+
+            if (ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                map.setMyLocationEnabled(true);
+                map.getUiSettings().setMyLocationButtonEnabled(false);
             }
-        });
+
+
+            map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    if (!((GoogleMapInfoWindowData) marker.getTag()).isFavourite()) {
+                        GoogleMapInfoWindowData infoWindow = new GoogleMapInfoWindowData();
+                        infoWindow = (GoogleMapInfoWindowData) marker.getTag();
+                        Toast.makeText(getContext(), "Has añadido '" + infoWindow.getName() + "' a favoritos", Toast.LENGTH_SHORT).show();
+                        infoWindow.setFavourite(true);
+                        marker.hideInfoWindow();
+                        marker.showInfoWindow();
+
+                        AddToFavourites(marker);
+                    } else {
+                        Toast.makeText(getContext(), "Este parking ya se encuentra en su lista de favoritos", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+        }else{
+
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngFavourite, 18f));
+        }
     }
 
     public void addMarkers() {
@@ -386,10 +399,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                     builder.include(markerOptions.getPosition());
                 }
 
-                LatLngBounds bounds = builder.build();
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
-                map.animateCamera(cu);
 
+                if(!venirDefavoritos) {
+                    LatLngBounds bounds = builder.build();
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
+                    map.animateCamera(cu);
+                }
                 progressBar.setVisibility(View.INVISIBLE);
             }
 
@@ -516,9 +531,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 JSONObject park = new JSONObject();
                 park.put("name", ((GoogleMapInfoWindowData)marker.getTag()).getName());
                 park.put("address", ((GoogleMapInfoWindowData)marker.getTag()).getAddress());
+                park.put("lat", marker.getPosition().latitude);
+                park.put("lon", marker.getPosition().longitude);
                 favouritesJSON.put(park);
                 db.collection("users").document(documentId).update("userFavourites", favouritesJSON.toString());
 
             }catch (Exception e){}
+    }
+
+    public void moveCameraFromFavourites(LatLng latLng, float zoom, String title) {
+
+        venirDefavoritos = true;
+        latLngFavourite = latLng;
+
+
+/*
+        if (title != "My Location") {
+            MarkerOptions options = new MarkerOptions()
+                .position(latLng)
+                .title(title);
+            map.addMarker(options);
+        }
+        */
     }
 }
