@@ -32,21 +32,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     .replace(R.id.main_fragment, new MapFragment(), "MapFragment")
                     .commit();
             ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
-        } else {
-            tag = savedInstanceState.getString("tagOfFragment");
-            fragment = getSupportFragmentManager().findFragmentByTag(tag);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_fragment, fragment, tag)
-                    .commit();
-
-            int item = 0;
-            if (tag.equals("TimerFragment")) item = R.id.main_menu_timer;
-            if (tag.equals("FavouriteFragment")) item = R.id.main_menu_favourites;
-            if (tag.equals("MapFragment")) item = R.id.main_menu_map;
-            if (tag.equals("VehicleFragment")) item = R.id.main_menu_vehicle;
-            if (tag.equals("AccountFragment")) item = R.id.main_menu_account;
-            ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(item);
 
         }
 
