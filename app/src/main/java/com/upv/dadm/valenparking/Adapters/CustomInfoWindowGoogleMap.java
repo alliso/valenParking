@@ -31,7 +31,7 @@ public class CustomInfoWindowGoogleMap implements GoogleMap.InfoWindowAdapter {
         TextView address = view.findViewById(R.id.markerInfo_address);
         TextView freePlaces = view.findViewById(R.id.markerInfo_places);
         TextView type = view.findViewById(R.id.markerInfo_type);
-        ImageView star = view.findViewById(R.id.markerInfo_favourite);
+        ImageView fav = view.findViewById(R.id.markerInfo_favourite);
 
         GoogleMapInfoWindowData infoData = (GoogleMapInfoWindowData) marker.getTag();
 
@@ -41,9 +41,9 @@ public class CustomInfoWindowGoogleMap implements GoogleMap.InfoWindowAdapter {
         type.setText(infoData.getType());
 
         if(infoData.isFavourite()) {
-            star.setImageResource(android.R.drawable.star_on);
+            fav.setImageResource(R.drawable.ic_favorite_map_on);
         } else {
-            star.setImageResource(android.R.drawable.star_off);
+            fav.setImageResource(R.drawable.ic_favorite_map_off);
         }
 
         return view;

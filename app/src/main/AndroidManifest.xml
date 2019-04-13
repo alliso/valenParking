@@ -51,14 +51,15 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <receiver android:name=".Services.AlarmReceiver"></receiver>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_key" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver android:name=".Services.AlarmReceiver"></receiver>
+
     </application>
 
 </manifest>
