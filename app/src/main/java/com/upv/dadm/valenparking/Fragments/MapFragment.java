@@ -274,7 +274,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap)
+    {
         map = googleMap;
 
 
@@ -364,14 +365,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
                     } else if (freePlacesInt > 0) {
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-                    } else {
+                    } else if (freePlacesInt == 0) {
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    } else {
+                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).alpha(0.2f);
                     }
 
                     GoogleMapInfoWindowData infoWindow = new GoogleMapInfoWindowData();
                     infoWindow.setName(name);
                     infoWindow.setAddress(address);
-                    infoWindow.setPlaces(freePlaces + " libres de " + totalPlaces);
+                    if (freePlacesInt < 0) {
+                        infoWindow.setPlaces("? libres de " + totalPlaces);
+                    } else {
+                        infoWindow.setPlaces(freePlaces + " libres de " + totalPlaces);
+                    }
                     infoWindow.setType("Tipo C");
                     infoWindow.setFavourite(isFavourite);
 

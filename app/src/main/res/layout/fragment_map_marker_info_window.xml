@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +13,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- <ImageView
         android:id="@+id/pic"
@@ -28,8 +27,8 @@
         android:id="@+id/markerInfo_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:singleLine="false"
         android:layout_marginTop="8dp"
+        android:singleLine="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/markerInfo_name" />
@@ -42,7 +41,7 @@
         android:textColor="#c2185b"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/markerInfo_address"/>
+        app:layout_constraintTop_toBottomOf="@+id/markerInfo_address" />
 
     <TextView
         android:id="@+id/markerInfo_type"
@@ -52,7 +51,7 @@
         android:textColor="#1976d2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/markerInfo_places"/>
+        app:layout_constraintTop_toBottomOf="@+id/markerInfo_places" />
 
     <ImageView
         android:id="@+id/markerInfo_favourite"
