@@ -4,10 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,15 +15,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,8 +32,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-import java.io.InputStream;
+import com.upv.dadm.valenparking.Utils.CircleTransform;
+
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -42,13 +44,19 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private CollectionReference userDBRef;
+    private FirebaseStorage dbPicture;
+    private StorageReference pictureDBref;
+    private StorageReference riversRef;
     private ImageView imgUser;
     private Uri path;
     private String newName;
     private  String newEmail;
+    private SharedPreferences prefs;
     private boolean imgUserChange = false;
     private final int REQUEST_GALLERY_PERMISSION = 20;
     private final int REQUEST_GALLERY_PICTURE = 25;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,45 +69,36 @@ public class EditProfileActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         userDBRef = db.collection("users");
 
+        dbPicture = FirebaseStorage.getInstance();
+        pictureDBref = dbPicture.getReference();
+
         final EditText edtxtUserName = (EditText) findViewById(R.id.edit_profile_userName_value);
         final EditText edtxtUserEmail = (EditText) findViewById(R.id.edit_profile_userEmail_value);
         imgUser = (ImageView) findViewById(R.id.edit_profile_userPicture);
         edtxtUserName.setText(currentUser.getDisplayName());
         edtxtUserEmail.setText(currentUser.getEmail());
-        //Cargar la imagen en el imageView
-        Log.v("pic", currentUser.getPhotoUrl().toString());
-        /*Picasso.with(this).load(currentUser.getPhotoUrl().toString())
-                .resize(300,300)
-                .centerCrop()
-                .transform(new CircleTransform())
-                .into(imgUser, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(EditProfileActivity.this, "ok", Toast.LENGTH_SHORT).show();
-                    }
 
-                    @Override
-                    public void onError(Exception e) {
-                        e.printStackTrace();
-                    }
-                });*/
-        if(ActivityCompat.checkSelfPermission(EditProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            //Si no ha sido aceptado previamente para versiones desde la 6.0 [API 23] en adelante
-            Picasso.Builder builder = new Picasso.Builder(this);
-            builder.listener(new Picasso.Listener()
-            {
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Boolean isImgUserChange = prefs.getBoolean("imgUserChange", false);
+        if(isImgUserChange){
+            riversRef = pictureDBref.child(currentUser.getUid()).child("profilePicture");
+            riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
-                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception)
-                {
-                    exception.printStackTrace();
+                public void onSuccess(Uri uri) {
+                    Picasso.with(EditProfileActivity.this).load(uri.toString())
+                            .resize(300,300)
+                            .centerCrop()
+                            .transform(new CircleTransform())
+                            .into(imgUser);
                 }
             });
-            builder.build().load(currentUser.getPhotoUrl().toString()).into(imgUser);
         }else{
-            Toast.makeText(EditProfileActivity.this, "no tengo permisos", Toast.LENGTH_SHORT).show();
+            Picasso.with(this).load(currentUser.getPhotoUrl().toString())
+                    .resize(300,300)
+                    .centerCrop()
+                    .transform(new CircleTransform())
+                    .into(imgUser);
         }
-
-
 
         final Button btnSaveChanges = (Button) findViewById(R.id.edit_profile_save_changes);
         btnSaveChanges.setOnClickListener(new View.OnClickListener() {
@@ -131,16 +130,13 @@ public class EditProfileActivity extends AppCompatActivity {
                                             currentUser.updateEmail(newEmail);
                                             userDBRef.document(document.getId()).update("userEmail", newEmail);
                                         }
-                                        if(imgUserChange){
+                                        if(imgUserChange) {
                                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                     .setPhotoUri(path)
                                                     .build();
                                             currentUser.updateProfile(profileUpdates);
 
                                             userDBRef.document(document.getId()).update("userPicture", path.toString());
-
-                                            Bitmap bm = getBitmap(path);
-                                            userDBRef.document(document.getId()).update("userPictureBitmap", bm);
 
                                         }
                                     }
@@ -207,47 +203,31 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_GALLERY_PICTURE){
-            //Si se ha seleccionado una foto
             if(resultCode == Activity.RESULT_OK){
+                //Si se ha seleccionado una foto
                 imgUserChange = true;
                 path = data.getData();
-                Log.v("picData", path.toString());
-                /*Picasso.with(EditProfileActivity.this).load(path.toString())
+                riversRef = pictureDBref.child(currentUser.getUid()).child("profilePicture");
+                riversRef.putFile(path);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("imgUserChange", imgUserChange);
+                editor.apply();
+
+                Picasso.with(EditProfileActivity.this).load(path.toString())
                         .resize(300,300)
                         .centerCrop()
                         .transform(new CircleTransform())
-                        .into(imgUser);*/
-                InputStream inputStream;
-                try{
-                    inputStream = getContentResolver().openInputStream(path);
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    imgUser.setImageBitmap(bitmap);
-                }catch(Exception e){
-                    Log.v("Exception", e.toString());
-                }
-
+                        .into(imgUser);
             }else{
                 Toast.makeText(EditProfileActivity.this, getString(R.string.edit_profile_gallery_not_take_photo_string), Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
     @Override
     public void onBackPressed() {
         setResult(1);
         super.onBackPressed();
-    }
-
-    private Bitmap getBitmap(Uri uriImage)
-    {
-        Bitmap mBitmap = null;
-        try{
-            mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriImage);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return mBitmap;
     }
 
 }

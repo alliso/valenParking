@@ -1,57 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorBgApp"
+    android:fillViewport="true">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
-    <ImageView
-        android:id="@+id/account_userPicture"
-        android:layout_width="150dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="4dp"
-        android:contentDescription="@string/account_content_description_string"
-        app:layout_constraintBottom_toTopOf="@+id/account_useName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.44"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@tools:sample/avatars[0]" />
+        <ImageView
+            android:id="@+id/account_userPicture"
+            android:layout_width="150dp"
+            android:layout_height="110dp"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="@string/account_content_description_string"
+            app:layout_constraintBottom_toTopOf="@+id/account_useName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.44"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:srcCompat="@tools:sample/avatars[0]" />
 
-    <TextView
-        android:id="@+id/account_useName"
-        android:layout_width="201dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="60dp"
-        android:textSize="20sp"
-        app:fontFamily="@font/acme"
-        app:layout_constraintBottom_toTopOf="@+id/account_edit_profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.871"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/account_useName"
+            android:layout_width="201dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="60dp"
+            android:textSize="20sp"
+            app:fontFamily="@font/acme"
+            app:layout_constraintBottom_toTopOf="@+id/account_edit_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.871"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/account_edit_profile"
-        android:layout_width="161dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/button_ripple_bg"
-        android:text="@string/account_edit_profile_string"
-        android:textColor="@color/colorPrimaryText"
-        app:layout_constraintBottom_toTopOf="@+id/account_log_out"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/account_edit_profile"
+            android:layout_width="161dp"
+            android:layout_height="43dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/button_ripple_bg"
+            android:text="@string/account_edit_profile_string"
+            android:textColor="@color/colorPrimaryText"
+            app:layout_constraintBottom_toTopOf="@+id/account_log_out"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/account_log_out"
-        android:layout_width="161dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="140dp"
-        android:background="@drawable/button_ripple_bg"
-        android:text="@string/account_log_out_string"
-        android:textColor="@color/colorPrimaryText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/account_log_out"
+            android:layout_width="161dp"
+            android:layout_height="43dp"
+            android:layout_marginBottom="140dp"
+            android:background="@drawable/button_ripple_bg"
+            android:text="@string/account_log_out_string"
+            android:textColor="@color/colorPrimaryText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
