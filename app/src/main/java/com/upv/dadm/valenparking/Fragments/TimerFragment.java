@@ -46,7 +46,8 @@ public class TimerFragment extends Fragment {
     private int hour;
     private int minute;
     private CountDownTimer countdown;
-
+    PendingIntent pendingIntent;
+    AlarmManager alarmManager;
     public TimerFragment(){ }
 
     @Override
@@ -75,11 +76,13 @@ public class TimerFragment extends Fragment {
             public void onClick(View v) {
                 if(button.getText().equals("Guardar hora")){
                     if(timerFromPicker()){
+                        sendNotification();
                         showTimer();
                     } else {
                         Toast.makeText(getContext(),"Hora no valida", Toast.LENGTH_SHORT).show();
                     }
                 } else{
+                    deleteNotification();
                     showPicker();
                 }
             }
@@ -115,12 +118,11 @@ public class TimerFragment extends Fragment {
 
     private void showTimer(){
         button.setText("Borrar hora");
-
         hourPicker.setVisibility(View.INVISIBLE);
         minutePicker.setVisibility(View.INVISIBLE);
         amPicker.setVisibility(View.INVISIBLE);
-
         timerLayout.setVisibility(View.VISIBLE);
+
     }
 
     private boolean timerFromPrefs(){
@@ -214,18 +216,18 @@ public class TimerFragment extends Fragment {
 
         Intent i = new Intent(getActivity(), AlarmReceiver.class);
 
-        PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),11111,i,0);
-
-        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-        long updateInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-        am.setRepeating(AlarmManager.RTC_WAKEUP, (calendar.getTimeInMillis() - AlarmManager.INTERVAL_HALF_HOUR) /1000, updateInterval, pemdingIntent);
-
+        pendingIntent = PendingIntent.getBroadcast(getActivity(),11111,i,0);
         Toast.makeText(getActivity(),"Se enviará una notificación media hora antes.", Toast.LENGTH_SHORT).show();
+        alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        long updateInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, (calendar.getTimeInMillis() - AlarmManager.INTERVAL_HALF_HOUR)  /1000, updateInterval, pendingIntent);
+
+
         // con el método cancel de alarmManager puedo cancelar la notificación
         //am.cancel(pemdingIntent);
     }
 
     public void deleteNotification(){
-        //Codigo para cancelar la notificacion
+        alarmManager.cancel(pendingIntent);
     }
 }
