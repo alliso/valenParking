@@ -1,18 +1,16 @@
 package com.upv.dadm.valenparking;
 
-import android.net.Uri;
-import android.net.wifi.SupplicantState;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.upv.dadm.valenparking.Fragments.AccountFragment;
 import com.upv.dadm.valenparking.Fragments.FavouriteFragment;
 import com.upv.dadm.valenparking.Fragments.MapFragment;
@@ -28,20 +26,31 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getSupportActionBar().setTitle(getString(R.string.app_name));
+        Bundle extras = getIntent().getExtras();
 
         ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setOnNavigationItemSelectedListener(this);
 
 
         //que se muestre por defecto MapFragment al entrar en la aplicación
         if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.main_fragment, new MapFragment(), "MapFragment")
-                    .commit();
-            ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
+            if (extras != null ) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment, new TimerFragment(), "TimerFragment")
+                        .commit();
+                ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_timer);
+
+            } else {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_fragment, new MapFragment(), "MapFragment")
+                        .commit();
+                ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
+            }
+
         } else {
+
+
             tag = savedInstanceState.getString("tagOfFragment");
             fragment = getSupportFragmentManager().findFragmentByTag(tag);
             getSupportFragmentManager()
@@ -116,5 +125,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .replace(R.id.main_fragment, fragment, tag)
                 .commit();
         return true;
+    }
+
+    public void openMap(float lat, float lon){
+        tag = "MapFragment";
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        if (mapFragment == null) {
+            mapFragment = new MapFragment();
+        }
+        mapFragment.moveCameraFromFavourites(new LatLng(lat, lon), 20f, "lugar seleccionado");
+        ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_fragment, mapFragment, tag)
+                .commit();
+
+
+
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
 import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
@@ -69,7 +71,7 @@ public class FavouriteFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView listavaciaMsg;
     String documentId = "";
-
+    FloatingActionButton fab;
 
     public FavouriteFragment(){ }
 
@@ -83,15 +85,37 @@ public class FavouriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_favourite, null);
 
-        setHasOptionsMenu(true);
+
+        view = inflater.inflate(R.layout.fragment_favourite, null);
+        fab = view.findViewById(R.id.delete_favs);
+        fab.hide();
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_favourites);
+        listavaciaMsg = (TextView) view.findViewById(R.id.empty_fav_msg);
+        progressBar.setVisibility(view.VISIBLE);
+        listavaciaMsg.setText(R.string.empty_favourite_msg);
+        listavaciaMsg.setVisibility(view.INVISIBLE);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialogFragment DialogFragment = myDialogFragment.getInstance(getString(R.string.favourite_dialog_delete_all_msg));
+                Bundle args = new Bundle();
+                args.putString("click", "all");
+                DialogFragment.setArguments(args);
+                DialogFragment.setTargetFragment(getFragmentManager().findFragmentByTag("FavouriteFragment"), 0);
+                DialogFragment.show(getFragmentManager(), "MyDialogFragment");
+
+            }
+        });
+        //setHasOptionsMenu(true);
 
 
         listener2 = new fauvoriteAdapter.OnFavouriteLongClickListener() {
             @Override
             public void onFavouriteLongClick() {
-                fav_menu.findItem(R.id.menu_delete_all_quotations).setVisible(hideIcon);
+                //fav_menu.findItem(R.id.delete_favs).setVisible(hideIcon);
+                fab.show();
 
             }
         };
@@ -106,15 +130,20 @@ public class FavouriteFragment extends Fragment {
                     }
                 }
                 if(!aux){
-                    fav_menu.findItem(R.id.menu_delete_all_quotations).setVisible(!hideIcon);
+                    //fav_menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
+                    fab.hide();
                 }
             }
         };
 
+
+
+
+
         GetUserFav(new MyCallback() {
             @Override
             public void onCallback(JSONArray value) {
-                //Log.v("prueba", value.toString());
+
                 try {
                     for (int i = 0; i < value.length(); i++) {
                         //Log.v("prueba", value.getJSONObject(i).get("name").toString());
@@ -123,8 +152,11 @@ public class FavouriteFragment extends Fragment {
                         Parkings parking = new Parkings();
                         parking.setParkingName(value.getJSONObject(i).get("name").toString());
                         parking.setCalle(value.getJSONObject(i).get("address").toString());
+                        parking.setLat(Float.parseFloat(value.getJSONObject(i).get("lat").toString()));
+                        parking.setLon(Float.parseFloat(value.getJSONObject(i).get("lon").toString()));
                         listParkings.add(parking);
                     }
+
                     adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
                     recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
                     recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -137,40 +169,6 @@ public class FavouriteFragment extends Fragment {
         });
         return view;
     }
-    /*public String getUserUID() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = "";
-        if (user != null) {
-            uid = user.getUid();
-
-            Log.v("prueba", uid);
-        }
-        return uid;
-    }*/
-
-    /*public void recuperarFav(final MyCallback myCallback){
-        String user = getUserUID();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users").child(user);
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //String valor = dataSnapshot.getValue();
-                String res = dataSnapshot.child("fav").child("name").getValue().toString();
-                Log.v("prueba", res);
-                myCallback.onCallback(res);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("error", "Error!", databaseError.toException());
-            }
-
-        });
-
-    }*/
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -185,13 +183,14 @@ public class FavouriteFragment extends Fragment {
                 }
             }
             if(cont == listParkings.size()) {
-                fav_menu.findItem(R.id.menu_delete_all_quotations).setVisible(!hideIcon);
+                //fav_menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
+
                 listavaciaMsg.setVisibility(view.VISIBLE);
             }
             listParkings = listParkingsAux;
             adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
             recyclerview_parkings.setAdapter(adapter);
-
+            fab.hide();
             updateUserFav();
 
         }
@@ -243,6 +242,8 @@ public class FavouriteFragment extends Fragment {
                 JSONObject park = new JSONObject();
                 park.put("name", p.getParkingName());
                 park.put("address", p.getCalle());
+                park.put("lat", p.getLat());
+                park.put("lon", p.getLon());
 
                 newList.put(park);
             }
@@ -254,10 +255,10 @@ public class FavouriteFragment extends Fragment {
         void onCallback(JSONArray value);
     }
 
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch(item.getItemId()){
-            case R.id.menu_delete_all_quotations:
+            case R.id.delete_favs:
                 myDialogFragment DialogFragment = myDialogFragment.getInstance(getString(R.string.favourite_dialog_delete_all_msg));
                 Bundle args = new Bundle();
                 args.putString("click", "all");
@@ -269,12 +270,12 @@ public class FavouriteFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.menu_favourite, menu);
-        menu.findItem(R.id.menu_delete_all_quotations).setVisible(!hideIcon);
+        menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_favourites);
         listavaciaMsg = (TextView) view.findViewById(R.id.empty_fav_msg);
         listavaciaMsg.setText(R.string.empty_favourite_msg);
@@ -282,6 +283,6 @@ public class FavouriteFragment extends Fragment {
         progressBar.setVisibility(view.VISIBLE);
         fav_menu = menu;
         super.onCreateOptionsMenu(menu,menuInflater);
-    }
+    }*/
 
 }
