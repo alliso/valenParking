@@ -1,32 +1,29 @@
 package com.upv.dadm.valenparking.Fragments;
 
 import android.Manifest;
-import android.content.SharedPreferences;
+import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
+import android.graphics.Color;
 import android.location.Location;
-import android.media.Image;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -63,18 +60,15 @@ import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.Pojo.GoogleMapInfoWindowData;
 import com.upv.dadm.valenparking.R;
 
-import org.checkerframework.checker.linear.qual.Linear;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     // Constants
     private static final int REQUEST_LOCATION_PERMISSIONS_CODE = 3;
@@ -110,7 +104,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     private AutocompleteSupportFragment placeAutocompleteFragment;
 
-    boolean venirDefavoritos = false;
+    boolean venirDefavoritos;
     LatLng latLngFavourite;
     Parkings parkingClicked = new Parkings();
 
@@ -127,6 +121,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         currentUser = mAuth.getCurrentUser();
 
         favouriteParkings = new ArrayList<>();
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
 
         // Initialize places
         Places.initialize(getContext(), getString(R.string.google_key));
@@ -156,10 +152,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Log.d("SELECCIONAR", place.toString());
-                //geoLocate(place.getName());
-                moveCamera(place.getLatLng(), DEFAULT_ZOOM, "Camera");
-                //Toast.makeText(getContext(), "Place name: " + place.getName(), Toast.LENGTH_SHORT).show();
+                moveCamera(place.getLatLng(), DEFAULT_ZOOM);
             }
 
             @Override
@@ -172,41 +165,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             @Override
             public void onCallback(JSONArray value) {
 
-        if (mapFragment == null) {
-            progressBar.setVisibility(View.VISIBLE);
-            initMap();
-        }
+                if (mapFragment == null) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    initMap();
+                }
 
-        getChildFragmentManager().beginTransaction().replace(R.id.map_fragment, mapFragment).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.map_fragment, mapFragment).commit();
             }
         });
+
         return view;
     }
 
 
-
-
     private void initFragment() {
-       /* placeAutocompleteAdapter = new PlaceAutocompleteAdapter(getContext(), googleApiClient,
-                LAT_LNG_BOUNDS, null);
-
-        searchText.setAdapter(placeAutocompleteAdapter);
-
-        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                    || actionId == EditorInfo.IME_ACTION_DONE
-                    || event.getAction() == KeyEvent.ACTION_DOWN
-                    || event.getAction() == KeyEvent.KEYCODE_ENTER) {
-
-                    // Execute searching method
-                    geoLocate();
-                }
-                return false;
-            }
-        });*/
-
         gpsImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,37 +189,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         hideSoftKeyboard();
     }
 
-    private void geoLocate(String searchString) {
-        //String searchString = searchText.getText().toString();
-
-        Geocoder geocoder = new Geocoder(getContext());
-        List<Address> addressList = new ArrayList<>();
-
-        try {
-            addressList = geocoder.getFromLocationName(searchString, 1);
-        } catch (IOException e) {
-
-        }
-
-        if (addressList.size() > 0) {
-            Address address = addressList.get(0);
-
-            Log.d("LOCATION", "Location get");
-            //Toast.makeText(getContext(), address.toString(), Toast.LENGTH_SHORT).show();
-
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM,
-                    address.getAddressLine(0));
-        }
-    }
-
     private void initMap() {
         mapFragment = SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
     }
 
     private void getDeviceLocation() {
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-
         try {
             if (mLocationPermissionsGranted) {
 
@@ -261,10 +208,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                             if (currentLocation != null) { // There is no lastLocation from this or other app
                                 // Move the camera and zoom to device location
                                 moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
-                                        DEFAULT_ZOOM, "My Location");
+                                        DEFAULT_ZOOM);
+                            } else {
+                                if (isLocationEnabled(getContext())) {
+                                    Toast.makeText(getContext(), getString(R.string.map_searching_gps), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Snackbar snackbar = Snackbar.make(view.findViewById(R.id.map_fragment_coordinator), getString(R.string.map_gps_disabled_sb_text), Snackbar.LENGTH_INDEFINITE);
+                                    snackbar.setAction(getString(R.string.map_gps_disable_sb_button_text), new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                        }
+                                    });
+                                    View snackbarView = snackbar.getView();
+                                    TextView snakbarText = snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                                    snakbarText.setTextColor(ContextCompat.getColor(getContext(), R.color.snackbarText));
+                                    Button snackbarButton = snackbarView.findViewById(android.support.design.R.id.snackbar_action);
+                                    snackbarButton.setTextColor(ContextCompat.getColor(getContext(), R.color.snackbarButtonText));
+                                    snackbar.show();
+                                }
                             }
                         } else {
-                            Toast.makeText(getContext(), "Unable to get current location", Toast.LENGTH_SHORT).show();
+                            Snackbar snackbar = Snackbar.make(view.findViewById(R.id.map_fragment_coordinator), getString(R.string.map_gps_disabled_sb_text), Snackbar.LENGTH_INDEFINITE);
+                            snackbar.setAction(getString(R.string.map_gps_disable_sb_button_text), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                }
+                            });
+                            View snackbarView = snackbar.getView();
+                            TextView snakbarText = snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                            snakbarText.setTextColor(ContextCompat.getColor(getContext(), R.color.snackbarText));
+                            Button snackbarButton = snackbarView.findViewById(android.support.design.R.id.snackbar_action);
+                            snackbarButton.setTextColor(ContextCompat.getColor(getContext(), R.color.snackbarButtonText));
+                            snackbar.show();
                         }
                     }
                 });
@@ -274,17 +249,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    public void moveCamera(LatLng latLng, float zoom, String title) {
+    public void moveCamera(LatLng latLng, float zoom) {
 
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-/*
-        if (title != "My Location") {
-            MarkerOptions options = new MarkerOptions()
-                .position(latLng)
-                .title(title);
-            map.addMarker(options);
-        }
-        */
 
         hideSoftKeyboard();
     }
@@ -301,10 +268,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         CustomInfoWindowGoogleMap customInfoWindow = new CustomInfoWindowGoogleMap(getContext());
         map.setInfoWindowAdapter(customInfoWindow);
 
-
         getLocationPermission();
-
-        if (!venirDefavoritos) getDeviceLocation();
 
         if (ActivityCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
@@ -338,11 +302,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         if (venirDefavoritos) map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngFavourite, 18f));
     }
 
-
-
-
     public void addMarkers() {
-        Log.d("USER_DEBUG", currentUser.getDisplayName());
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("parkings");
@@ -356,6 +316,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     String latitud = postSnapshot.child("coordinates").child("lat").getValue().toString();
                     String longitud = postSnapshot.child("coordinates").child("lon").getValue().toString();
+                    String type = postSnapshot.child("type").getValue().toString();
                     String name = postSnapshot.child("name").getValue().toString();
                     name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
                     boolean isFavourite = false;
@@ -363,15 +324,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
                     for (Parkings p : favouriteParkings) {
 
-                        Log.v("FAVOURITE", "Mis parkings: " + p.getParkingName());
-                        Log.v("FAVOURITE", name);
-
                         if (p.getParkingName().equals(name))
                             isFavourite = true;
-
-
-                        Log.d("Prueba", p.getParkingName());
-                        Log.d("Prueba", name);
 
                         if(p.getParkingName().equals(name) && p.isClicked()){
                             isClicked = true;
@@ -405,12 +359,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                     GoogleMapInfoWindowData infoWindow = new GoogleMapInfoWindowData();
                     infoWindow.setName(name);
                     infoWindow.setAddress(address);
+                    String places;
                     if (freePlacesInt < 0) {
-                        infoWindow.setPlaces("? libres de " + totalPlaces);
+                        places = "? ";
                     } else {
-                        infoWindow.setPlaces(freePlaces + " libres de " + totalPlaces);
+                        places = freePlaces + " ";
                     }
-                    infoWindow.setType("Tipo C");
+                    places += getString(R.string.map_free_places) + " " + totalPlaces;
+                    infoWindow.setPlaces(places);
+                    infoWindow.setType(type.equals("0") ? getString(R.string.map_public_parking) : getString(R.string.map_private_parking));
                     infoWindow.setFavourite(isFavourite);
 
                     Marker marker = map.addMarker(markerOptions);
@@ -418,7 +375,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
                     if(isClicked) {
                         marker.showInfoWindow();
-                        Log.v("prueba", "isclicked");
                     }
                     builder.include(markerOptions.getPosition());
                 }
@@ -437,24 +393,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
             }
         });
-
-        //map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f));
-    }
-
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-        Toast.makeText(getContext(), "Current location:\n" + location, Toast.LENGTH_SHORT);
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        Toast.makeText(getContext(), "MyLocation button clicked", Toast.LENGTH_SHORT);
-        return false;
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     public void getLocationPermission() {
@@ -487,6 +425,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                     }
                     // We get permissions for picking the user location
                     mLocationPermissionsGranted = true;
+
+                    if (map != null) {
+                        map.setMyLocationEnabled(true);
+                        map.getUiSettings().setMyLocationButtonEnabled(false);
+                    }
                 }
                 break;
         }
@@ -556,19 +499,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void setClickedParking(Parkings p){
         parkingClicked = p;
     }
-    public void moveCameraFromFavourites(LatLng latLng, float zoom, String title) {
 
+    public void moveCameraFromFavourites(LatLng latLng, float zoom, String title) {
         venirDefavoritos = true;
         latLngFavourite = latLng;
+    }
 
+    public boolean isLocationEnabled(Context context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-/*
-        if (title != "My Location") {
-            MarkerOptions options = new MarkerOptions()
-                .position(latLng)
-                .title(title);
-            map.addMarker(options);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            return false;
         }
-        */
+
+        return true;
     }
 }

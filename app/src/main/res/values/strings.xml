@@ -34,13 +34,24 @@
     <string name="forgot_email_failed_string">Please, make sure the email address is correct.</string>
     <string name="my_default_web_client_id" translatable="false">652442408718-ip4d1930e84ulpbcovjr1fppa96cqcq8.apps.googleusercontent.com</string>
 
+    <!-- Favourites Fragment -->
+
     <string name="menu_clearFavourites">Delete favourites</string>
     <string name="favourite_dialog_delete_title">Delete favourites</string>
     <string name="favourite_dialog_option_cancel">CANCEL</string>
     <string name="favourite_dialog_option_ok">OK</string>
-    <string name="favourite_dialog_delete_all_msg">Are you sure that you want to delete ALL your favourite quotations?</string>
     <string name="favourite_dialog_delete_all_title">Do you want to delete the seleccted parkings?</string>
     <string name="empty_favourite_msg">No favourites to show</string>
+
+    <!-- Map Fragment -->
+    <string name="map_private_parking">Private</string>
+    <string name="map_public_parking">Public</string>
+    <string name="map_free_places">free places of</string>
+    <string name="map_gps_disabled_sb_text">Enable Location to use this feature</string>
+    <string name="map_gps_disable_sb_button_text">Close</string>
+    <string name="map_no_location">Unable to get current location</string>
+    <string name="map_searching_gps">Searching for GPS</string>
+
     <!--account fragment-->
     <string name="account_log_out_string">Log out</string>
     <string name="account_edit_profile_string">Edit your profile</string>
