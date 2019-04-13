@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.upv.dadm.valenparking.Fragments.FavouriteFragment;
+import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
 
@@ -24,6 +25,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
 
 
     private List<Parkings> data;
+    private Parkings lastClickedParking;
     private Context context;
     private int layout;
     boolean aux;
@@ -57,7 +59,6 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
         holder.v.setBackgroundColor(parkings.isSelected() ? context.getResources().getColor(R.color.favouriteSelected) : context.getResources().getColor(R.color.colorBgApp));
 
         for(Parkings p : data){
-            //Log.v("prueba", String.valueOf(p.isSelected()));
             if(p.isSelected()) {
                 aux = true;
             }
@@ -90,6 +91,13 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
                         holder.lytParent.setBackgroundColor(parking.isSelected() ? context.getResources().getColor(R.color.favouriteSelected) : context.getResources().getColor(R.color.colorBgApp));
                         clickShortListener.onFavouriteShortClick();
                         notifyItemChanged(holder.getAdapterPosition());
+                    }else {
+                        final Parkings parking = data.get(holder.getAdapterPosition());
+
+                        setLastClickedParking(parking);
+                        MainActivity activity = (MainActivity) context;
+                        holder.lytParent.setBackgroundColor(context.getResources().getColor(R.color.favouriteSelected));
+                        activity.openMap(parking.getLat(), parking.getLon());
                     }
                 }
             });
@@ -124,5 +132,15 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
         void onFavouriteShortClick();
     }
 
+    public interface OnShortClickGoToMapListener{
+        void onShortClickGoToMap();
+    }
 
+    public Parkings getLastClickedParking() {
+        return lastClickedParking;
+    }
+
+    public void setLastClickedParking(Parkings lastClickedParking) {
+        this.lastClickedParking = lastClickedParking;
+    }
 }

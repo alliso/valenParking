@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.upv.dadm.valenparking">
 
 
@@ -10,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,17 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_key" />
-
         <activity
-            android:name=".EditProfileActivity">
-
-        </activity>
-        <activity
-            android:name=".LauncherActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".LauncherActivity">
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,8 +46,21 @@
             android:name=".ForgotPasswordActivity"
             android:screenOrientation="portrait"/>
 
-        <receiver android:name=".Services.AlarmReceiver"></receiver>
+        <activity
+            android:name=".EditProfileActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
+        <receiver android:name=".Services.AlarmReceiver"></receiver>
+        <receiver android:name=".Services.CancelNotification">
+            <intent-filter>
+                <action android:name="CANCEL" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_key" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

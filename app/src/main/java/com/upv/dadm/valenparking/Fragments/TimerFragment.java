@@ -156,13 +156,13 @@ public class TimerFragment extends Fragment {
 
         Intent i = new Intent(getActivity(), AlarmReceiver.class);
 
-        PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),1,i,0);
+        PendingIntent pemdingIntent = PendingIntent.getBroadcast(getActivity(),11111,i,0);
 
         AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
         long updateInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() /1000, updateInterval, pemdingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, (calendar.getTimeInMillis() - AlarmManager.INTERVAL_HALF_HOUR) /1000, updateInterval, pemdingIntent);
 
-        Toast.makeText(getActivity(),"Notificación programada a las " + hour + ":" + minute, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"Se enviará una notificación media hora antes.", Toast.LENGTH_SHORT).show();
         // con el método cancel de alarmManager puedo cancelar la notificación
         //am.cancel(pemdingIntent);
         Log.d(TAG, "AQUIIIIIIIIII");
