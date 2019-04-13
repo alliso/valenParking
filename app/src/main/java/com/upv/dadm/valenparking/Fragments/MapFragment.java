@@ -1,11 +1,14 @@
 package com.upv.dadm.valenparking.Fragments;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.media.Image;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -59,6 +63,7 @@ import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.Pojo.GoogleMapInfoWindowData;
 import com.upv.dadm.valenparking.R;
 
+import org.checkerframework.checker.linear.qual.Linear;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -69,9 +74,7 @@ import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener,
-        GoogleMap.OnMyLocationClickListener,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleMap.OnMyLocationClickListener {
 
     // Constants
     private static final int REQUEST_LOCATION_PERMISSIONS_CODE = 3;
@@ -82,7 +85,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             new LatLng(-40, -168), new LatLng(71, 136));
 
     // Widgets
-    private AutoCompleteTextView searchText;
     private ImageView gpsImage;
 
     // Variables
@@ -100,10 +102,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private JSONArray favouritesJSON;
     private List<Parkings> favouriteParkings;
 
-
+    private boolean permissionsDenied = false;
 
     private View view;
     private ProgressBar progressBar;
+    private ImageView searchIcon;
 
     private AutocompleteSupportFragment placeAutocompleteFragment;
 
@@ -141,14 +144,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
         view = inflater.inflate(R.layout.fragment_map, null);
         progressBar = view.findViewById(R.id.map_progress_bar);
-        //searchText = view.findViewById(R.id.map_search_bar_tv);
+        searchIcon = (ImageView) ((LinearLayout)view.findViewById(R.id.map_place_autocomplete)).getChildAt(0);
+        searchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_search_black_24dp));
         gpsImage = view.findViewById(R.id.map_ic_gps);
 
         // Initialize the AutocompleteSupportFragment.
         placeAutocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.map_place_autocomplete);
 
+        // Set the country we want to search in
+        placeAutocompleteFragment.setCountry("ES");
+
         // Specify the types of place data to return.
-        placeAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG));
+        placeAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS));
 
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -426,21 +433,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public boolean onMyLocationButtonClick() {
         Toast.makeText(getContext(), "MyLocation button clicked", Toast.LENGTH_SHORT);
         return false;
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
     }
 
     @Override

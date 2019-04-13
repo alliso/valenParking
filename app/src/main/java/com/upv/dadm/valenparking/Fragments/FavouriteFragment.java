@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
 import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
