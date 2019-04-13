@@ -48,4 +48,15 @@
     <string name="vehicle_not_known_street_string">Calle desconocida</string>
     <string name="vehicle_cant_get_location_string">No podemos obtener la localización</string>
     <string name="connection_failed_string">Conexión fallida</string>
+    <string name="map_private_parking">Privado</string>
+    <string name="map_public_parking">Público</string>
+    <string name="map_free_places">libres de</string>
+    <string name="map_gps_disabled_sb_text">Habilita la localización para utilizar esta característica</string>
+    <string name="map_gps_disable_sb_button_text">Cerrar</string>
+    <string name="map_no_location">No se ha encontrado la ubicación</string>
+    <string name="menu_clearFavourites">Borrar favoritos</string>
+    <string name="favourite_dialog_delete_title">Borrar favoritos</string>
+    <string name="favourite_dialog_option_cancel">Cancelar</string>
+    <string name="favourite_dialog_option_ok">Aceptar</string>
+    <string name="map_searching_gps">Buscando localización actual</string>
 </resources>
