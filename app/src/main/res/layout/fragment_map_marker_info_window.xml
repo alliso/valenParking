@@ -1,72 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/markerInfo_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/white_border">
 
-    <!-- <ImageView
-        android:id="@+id/pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"/> -->
 
-    <TextView
-        android:id="@+id/markerInfo_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:singleLine="false"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/markerInfo_name" />
+        <TextView
+            android:id="@+id/markerInfo_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="@dimen/map_info_window"
+            android:gravity="center"/>
 
-    <TextView
-        android:id="@+id/markerInfo_places"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="#c2185b"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/markerInfo_address"/>
+        <TextView
+            android:id="@+id/markerInfo_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:singleLine="false"
+            android:layout_below="@+id/markerInfo_name"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="@dimen/map_info_window"
+            android:gravity="center"/>
 
-    <TextView
-        android:id="@+id/markerInfo_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="#1976d2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/markerInfo_places"/>
+        <TextView
+            android:id="@+id/markerInfo_places"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#c2185b"
+            android:layout_below="@+id/markerInfo_address"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="@dimen/map_info_window"
+            android:gravity="center"/>
 
-    <ImageView
-        android:id="@+id/markerInfo_favourite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/markerInfo_type"
-        app:srcCompat="@android:drawable/star_off" />
+        <TextView
+            android:id="@+id/markerInfo_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#1976d2"
+            android:layout_below="@id/markerInfo_places"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="@dimen/map_info_window"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/markerInfo_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_below="@id/markerInfo_type"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@android:drawable/star_off"
+            android:gravity="center"/>
+
+    </RelativeLayout>
 
 
 </android.support.constraint.ConstraintLayout>
