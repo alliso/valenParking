@@ -97,7 +97,8 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
                         setLastClickedParking(parking);
                         MainActivity activity = (MainActivity) context;
                         holder.lytParent.setBackgroundColor(context.getResources().getColor(R.color.favouriteSelected));
-                        activity.openMap(parking.getLat(), parking.getLon());
+                        parking.setClicked(true);
+                        activity.openMap(parking.getLat(), parking.getLon(), parking);
                     }
                 }
             });

@@ -6,6 +6,7 @@ public class Parkings {
     private boolean isSelected = false;
     public float lat;
     public float lon;
+    public boolean clicked = false;
 
 
     public Parkings(String name, String calle, float lat, float lon){
@@ -48,5 +49,9 @@ public class Parkings {
     public boolean isSelected() {
         return isSelected;
     }
+
+    public boolean isClicked() {return clicked; }
+
+    public void setClicked(boolean onclicked) {clicked = onclicked; }
 }
 

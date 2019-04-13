@@ -99,12 +99,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return true;
     }
 
-    public void openMap(float lat, float lon){
+    public void openMap(float lat, float lon, Parkings p){
         tag = "MapFragment";
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if (mapFragment == null) {
             mapFragment = new MapFragment();
         }
+        mapFragment.setClickedParking(p);
+
         mapFragment.moveCameraFromFavourites(new LatLng(lat, lon), 20f, "lugar seleccionado");
         ((BottomNavigationView) findViewById(R.id.main_bottomNavigationView)).setSelectedItemId(R.id.main_menu_map);
         getSupportFragmentManager()

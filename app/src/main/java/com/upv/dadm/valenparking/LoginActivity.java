@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                                 Map<String, Object> user = new HashMap<>();
                                                 user.put("userEmail", currentUser.getEmail());
-                                                user.put("userFavourites", "");
+                                                user.put("userFavourites", "[]");
                                                 user.put("userID", currentUser.getUid());
                                                 user.put("userName", name[0]);
                                                 user.put("userPicture", "android.resource://" + getPackageName() + "/" + R.drawable.user_default);
@@ -224,7 +224,7 @@ public class LoginActivity extends AppCompatActivity {
                                     } else {
                                         Map<String, Object> user = new HashMap<>();
                                         user.put("userEmail", account.getEmail());
-                                        user.put("userFavourites", "");
+                                        user.put("userFavourites", "[]");
                                         user.put("userID", currentUser.getUid());
                                         user.put("userName", account.getDisplayName());
                                         user.put("userPicture", account.getPhotoUrl().toString());
