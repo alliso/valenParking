@@ -101,7 +101,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private List<Parkings> favouriteParkings;
 
 
-
     private View view;
     private ProgressBar progressBar;
 
@@ -109,7 +108,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     boolean venirDefavoritos = false;
     LatLng latLngFavourite;
-
+    Parkings parkingClicked = new Parkings();
 
 
     public MapFragment() {
@@ -128,11 +127,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         // Initialize places
         Places.initialize(getContext(), getString(R.string.google_key));
 
-        GetUserFav(new FavouriteFragment.MyCallback() {
-            @Override
-            public void onCallback(JSONArray value) {
-            }
-        });
+
     }
 
     @Override
@@ -165,6 +160,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }
         });
 
+        GetUserFav(new FavouriteFragment.MyCallback() {
+            @Override
+            public void onCallback(JSONArray value) {
 
         if (mapFragment == null) {
             progressBar.setVisibility(View.VISIBLE);
@@ -172,9 +170,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
 
         getChildFragmentManager().beginTransaction().replace(R.id.map_fragment, mapFragment).commit();
-
+            }
+        });
         return view;
     }
+
+
+
 
     private void initFragment() {
        /* placeAutocompleteAdapter = new PlaceAutocompleteAdapter(getContext(), googleApiClient,
@@ -248,7 +250,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                         if (task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
 
-                            if(currentLocation != null) { // There is no lastLocation from this or other app
+                            if (currentLocation != null) { // There is no lastLocation from this or other app
                                 // Move the camera and zoom to device location
                                 moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                         DEFAULT_ZOOM, "My Location");
@@ -291,46 +293,45 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         CustomInfoWindowGoogleMap customInfoWindow = new CustomInfoWindowGoogleMap(getContext());
         map.setInfoWindowAdapter(customInfoWindow);
 
-        if(!venirDefavoritos) {
 
+        getLocationPermission();
 
-            getLocationPermission();
+        if (!venirDefavoritos) getDeviceLocation();
 
-            getDeviceLocation();
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.checkSelfPermission(getContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(getContext(),
-                            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-                map.setMyLocationEnabled(true);
-                map.getUiSettings().setMyLocationButtonEnabled(false);
-            }
-
-
-            map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    if (!((GoogleMapInfoWindowData) marker.getTag()).isFavourite()) {
-                        GoogleMapInfoWindowData infoWindow = new GoogleMapInfoWindowData();
-                        infoWindow = (GoogleMapInfoWindowData) marker.getTag();
-                        Toast.makeText(getContext(), "Has añadido '" + infoWindow.getName() + "' a favoritos", Toast.LENGTH_SHORT).show();
-                        infoWindow.setFavourite(true);
-                        marker.hideInfoWindow();
-                        marker.showInfoWindow();
-
-                        AddToFavourites(marker);
-                    } else {
-                        Toast.makeText(getContext(), "Este parking ya se encuentra en su lista de favoritos", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
-        }else{
-
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngFavourite, 18f));
+            map.setMyLocationEnabled(true);
+            map.getUiSettings().setMyLocationButtonEnabled(false);
         }
+
+
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                if (!((GoogleMapInfoWindowData) marker.getTag()).isFavourite()) {
+                    GoogleMapInfoWindowData infoWindow = new GoogleMapInfoWindowData();
+                    infoWindow = (GoogleMapInfoWindowData) marker.getTag();
+                    Toast.makeText(getContext(), "Has añadido '" + infoWindow.getName() + "' a favoritos", Toast.LENGTH_SHORT).show();
+                    infoWindow.setFavourite(true);
+                    marker.hideInfoWindow();
+                    marker.showInfoWindow();
+
+                    AddToFavourites(marker);
+                } else {
+                    Toast.makeText(getContext(), "Este parking ya se encuentra en su lista de favoritos", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        if (venirDefavoritos) map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLngFavourite, 18f));
     }
+
+
+
 
     public void addMarkers() {
         Log.d("USER_DEBUG", currentUser.getDisplayName());
@@ -350,6 +351,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                     String name = postSnapshot.child("name").getValue().toString();
                     name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
                     boolean isFavourite = false;
+                    boolean isClicked = false;
 
                     for (Parkings p : favouriteParkings) {
 
@@ -358,6 +360,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
                         if (p.getParkingName().equals(name))
                             isFavourite = true;
+
+
+                        Log.d("Prueba", p.getParkingName());
+                        Log.d("Prueba", name);
+
+                        if(p.getParkingName().equals(name) && p.isClicked()){
+                            isClicked = true;
+                        }
                     }
 
                     String address = postSnapshot.child("address").getValue().toString();
@@ -389,7 +399,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                     infoWindow.setType("Tipo C");
                     infoWindow.setFavourite(isFavourite);
 
-                    map.addMarker(markerOptions).setTag(infoWindow);
+                    Marker marker = map.addMarker(markerOptions);
+                    marker.setTag(infoWindow);
+
+                    if(isClicked) {
+                        marker.showInfoWindow();
+                        Log.v("prueba", "isclicked");
+                    }
                     builder.include(markerOptions.getPosition());
                 }
 
@@ -504,10 +520,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                                     try {
                                         parking.setParkingName(favouritesJSON.getJSONObject(i).get("name").toString());
                                         parking.setCalle(favouritesJSON.getJSONObject(i).get("address").toString());
+                                        if(parking.getParkingName().equals(parkingClicked.getParkingName())){
+                                            parking.setClicked(true);
+
+                                        }
                                         favouriteParkings.add(parking);
-                                        myCallback.onCallback(null);
+
                                     } catch (Exception e) { }
                                 }
+                                myCallback.onCallback(null);
                             }catch (Exception e){
                                 favouritesJSON = new JSONArray();
                             }
@@ -533,6 +554,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }catch (Exception e){}
     }
 
+    public void setClickedParking(Parkings p){
+        parkingClicked = p;
+    }
     public void moveCameraFromFavourites(LatLng latLng, float zoom, String title) {
 
         venirDefavoritos = true;
