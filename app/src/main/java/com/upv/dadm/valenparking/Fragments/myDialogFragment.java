@@ -23,7 +23,7 @@ public class myDialogFragment extends AppCompatDialogFragment {
         if(click.equals("one")){
             builder.setTitle(getString(R.string.favourite_dialog_delete_title));
         }else{
-            builder.setTitle(getString(R.string.favourite_dialog_delete_all_title));
+            builder.setTitle(getString(R.string.favourite_dialog_delete_all));
         }
         builder.setMessage(msg);
 

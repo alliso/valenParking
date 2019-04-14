@@ -101,7 +101,7 @@ public class FavouriteFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myDialogFragment DialogFragment = myDialogFragment.getInstance(getString(R.string.favourite_dialog_delete_all_msg));
+                myDialogFragment DialogFragment = myDialogFragment.getInstance(getString(R.string.favourite_dialog_delete_all));
                 Bundle args = new Bundle();
                 args.putString("click", "all");
                 DialogFragment.setArguments(args);

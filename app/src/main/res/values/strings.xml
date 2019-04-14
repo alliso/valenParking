@@ -38,8 +38,7 @@
     <string name="favourite_dialog_delete_title">Delete favourites</string>
     <string name="favourite_dialog_option_cancel">CANCEL</string>
     <string name="favourite_dialog_option_ok">OK</string>
-    <string name="favourite_dialog_delete_all_msg">Are you sure that you want to delete ALL your favourite quotations?</string>
-    <string name="favourite_dialog_delete_all_title">Do you want to delete the seleccted parkings?</string>
+    <string name="favourite_dialog_delete_all">Do you want to delete the selected parkings?</string>
     <string name="empty_favourite_msg">No favourites to show</string>
     <string name="free_places">Free: </string>
     <!--account fragment-->

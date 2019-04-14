@@ -6,7 +6,7 @@
     <string name="main_menu_map_string">Mapa</string>
     <string name="main_menu_vehicle_string">Mi vehiculo</string>
     <string name="main_menu_account_string">Perfil</string>
-    <string name="favourite_dialog_delete_all_title">¿Quieres borrar los parkings seleccionados?</string>
+    <string name="favourite_dialog_delete_all">¿Quieres borrar los parkings seleccionados?</string>
     <string name="empty_favourite_msg">No hay favoritos que mostrar</string>
     <string name="login_password_string">Contraseña</string>
     <string name="login_confirm_password_string">Confirmar contraseña</string>
