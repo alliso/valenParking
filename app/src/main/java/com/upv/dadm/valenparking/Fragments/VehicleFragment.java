@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -44,12 +45,16 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
     private String TAG = "Vehicle";
 
 
-    private ImageButton locationButton;
+    private Button locationButton;
+    private Button deleteButton;
     private ImageButton mapButton;
     private TextView streetText;
-    private TextView descrText;
+    private TextView myLocation;
+    private TextView locationMap;
     private EditText descrEdit;
-    private Button deleteButton;
+    private EditText seatEdit;
+    private EditText floorEdit;
+
 
 
     private SharedPreferences prefs;
@@ -74,10 +79,6 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
         prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         editor = prefs.edit();
 
-        locationStreet = prefs.getString("myLocation", "");
-        locationDescription = prefs.getString("myLocationDescription", "");
-        locationCoord = prefs.getString("myLocationCoord","");
-
         locationButton = view.findViewById(R.id.vehicleSaveButton);
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,13 +86,16 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
                 getLocation();
             }
         });
+
         mapButton = view.findViewById(R.id.vehicleMapButton);
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openMaps();
+
             }
         });
+
         deleteButton = view.findViewById(R.id.vehicleDeleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,10 +105,11 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
             }
         });
         streetText = view.findViewById(R.id.vehicleStreetText);
-        descrText = view.findViewById(R.id.vehicleDescriptionText);
         descrEdit = view.findViewById(R.id.vehicleEditText);
+        seatEdit = view.findViewById(R.id.editTextPlaza);
+        floorEdit = view.findViewById(R.id.editTextPlanta);
 
-
+        locationMap = view.findViewById(R.id.vehicleUbicaciónReal);
         callback = new MyLocationCallback();
         client = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
@@ -112,11 +117,27 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
                 .addApi(LocationServices.API)
                 .build();
         locationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-
+        loadPreferences();
         updateUi();
 
-
         return view;
+    }
+
+    private void loadPreferences() {
+        locationStreet = prefs.getString("myLocation", "");
+        locationDescription = prefs.getString("myLocationDescription", "");
+        locationCoord = prefs.getString("myLocationCoord","");
+        seatEdit.setText(prefs.getString("plaza",""));
+        floorEdit.setText(prefs.getString("planta",""));
+        descrEdit.setText(prefs.getString("descripcion",""));
+    }
+
+    private void savePreferences() {
+        editor.putString("plaza",seatEdit.getText().toString());
+        editor.putString("planta",floorEdit.getText().toString());
+        editor.putString("descripcion", descrEdit.getText().toString());
+        editor.apply();
+
     }
 
     @Override
@@ -180,6 +201,10 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
         editor.putString("myLocationDescription",null);
         editor.apply();
         locationStreet = "";
+        seatEdit.setText("");
+        floorEdit.setText("");
+        descrEdit.setText("");
+
     }
 
     public void openMaps(){
@@ -216,27 +241,43 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     private void updateUi(){
+        savePreferences();
         if(locationStreet.equals("")){
             //Visibles
             locationButton.setVisibility(View.VISIBLE);
-            descrEdit.setVisibility(View.VISIBLE);
+            descrEdit.setEnabled(true);
+            floorEdit.setEnabled(true);
+            seatEdit.setEnabled(true);
+            floorEdit.setBackgroundColor(getResources().getColor(R.color.colorBgEditText));
+            seatEdit.setBackgroundColor(getResources().getColor(R.color.colorBgEditText));
+            descrEdit.setBackgroundColor(getResources().getColor(R.color.colorBgEditText));
             //No Visibles
             mapButton.setVisibility(View.INVISIBLE);
             streetText.setVisibility(View.INVISIBLE);
-            descrText.setVisibility(View.INVISIBLE);
             deleteButton.setVisibility(View.INVISIBLE);
+            locationMap.setVisibility(View.INVISIBLE);
+
         } else {
+
             //Visibles
             mapButton.setVisibility(View.VISIBLE);
             streetText.setVisibility(View.VISIBLE);
-            descrText.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
+            locationMap.setVisibility(View.VISIBLE);
+
+            floorEdit.setBackgroundColor(getResources().getColor(R.color.colorBgApp));
+            seatEdit.setBackgroundColor(getResources().getColor(R.color.colorBgApp));
+            descrEdit.setBackgroundColor(getResources().getColor(R.color.colorBgApp));
+
+            descrEdit.setEnabled(false);
+            seatEdit.setEnabled(false);
+            floorEdit.setEnabled(false);
+
             //No Visibles
             locationButton.setVisibility(View.INVISIBLE);
-            descrEdit.setVisibility(View.INVISIBLE);
+
 
             streetText.setText(locationStreet);
-            descrText.setText(locationDescription);
         }
     }
 
