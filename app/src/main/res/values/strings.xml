@@ -73,8 +73,12 @@
     <string name="vehicle_edit_text_string">Write a short description about your parking</string>
     <string name="vehicle_not_known_street_string">Unknown street</string>
     <string name="vehicle_cant_get_location_string">We can not get the location</string>
-
-
+    <string name="vehicle_seat">Seat:</string>
+    <string name="vehicle_floor">Floor:</string>
+    <string name="vehicle_description">Description:</string>
+    <string name="vehicle_location">Save  Location</string>
+    <string name="vehicle_deleteLocation">Delete  Location</string>
+    <string name="vehicle_myLocation">My Location:</string>
     <!-- common strings -->
     <string name="connection_failed_string">Connection failed</string>
 

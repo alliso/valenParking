@@ -59,4 +59,10 @@
     <string name="favourite_dialog_option_cancel">Cancelar</string>
     <string name="favourite_dialog_option_ok">Aceptar</string>
     <string name="map_searching_gps">Buscando localización actual</string>
+    <string name="vehicle_floor">Planta:</string>
+    <string name="vehicle_seat">Plaza:</string>
+    <string name="vehicle_location">Guardar Ubicación</string>
+    <string name="vehicle_description">Descripción:</string>
+    <string name="vehicle_deleteLocation">Borrar Ubicación</string>
+    <string name="vehicle_myLocation">Mi ubicación:</string>
 </resources>
