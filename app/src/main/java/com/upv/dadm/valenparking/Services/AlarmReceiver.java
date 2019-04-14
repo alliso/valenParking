@@ -28,7 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notification", NotificationManager.IMPORTANCE_DEFAULT);
 
             // Configure the notification channel.
             notificationChannel.setDescription("Channel description");
@@ -41,7 +41,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         //cancel intent
         Intent intentCancel = new Intent(context, CancelNotification.class);
-        intentCancel.setAction("CANCEL");
+        intentCancel.setAction(context.getString(R.string.notification_cancel));
         intentCancel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context, 11111, intentCancel, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -57,10 +57,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker("Hearty365")
                 //     .setPriority(Notification.PRIORITY_MAX)
-                .setContentTitle("PARKING NOTIFICATION")
-                .setContentText("Te quedan 30 minutos de parking.")
+                .setContentTitle(context.getString(R.string.notification_advice))
+                .setContentText(context.getString(R.string.notification_text))
                 .setContentInfo("Info")
-                .addAction(R.drawable.button_ripple_google, "Cancel", pendingIntentCancel);
+                .addAction(R.drawable.button_ripple_google, context.getString(R.string.notification_cancel_button), pendingIntentCancel);
         manager.notify(11111, notificationBuilder.build());
     }
 }

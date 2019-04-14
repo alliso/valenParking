@@ -243,6 +243,7 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
     private void updateUi(){
         savePreferences();
         if(locationStreet.equals("")){
+            descrEdit.setHint(getContext().getString(R.string.vehicle_edit_text_string));
             //Visibles
             locationButton.setVisibility(View.VISIBLE);
             descrEdit.setEnabled(true);
@@ -258,7 +259,7 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
             locationMap.setVisibility(View.INVISIBLE);
 
         } else {
-
+            if(descrEdit.getText().toString().equals("")) descrEdit.setHint("");
             //Visibles
             mapButton.setVisibility(View.VISIBLE);
             streetText.setVisibility(View.VISIBLE);
@@ -268,15 +269,12 @@ public class VehicleFragment extends Fragment implements GoogleApiClient.Connect
             floorEdit.setBackgroundColor(getResources().getColor(R.color.colorBgApp));
             seatEdit.setBackgroundColor(getResources().getColor(R.color.colorBgApp));
             descrEdit.setBackgroundColor(getResources().getColor(R.color.colorBgApp));
-
             descrEdit.setEnabled(false);
             seatEdit.setEnabled(false);
             floorEdit.setEnabled(false);
 
             //No Visibles
             locationButton.setVisibility(View.INVISIBLE);
-
-
             streetText.setText(locationStreet);
         }
     }

@@ -66,4 +66,8 @@
     <string name="vehicle_description">Descripción:</string>
     <string name="vehicle_deleteLocation">Borrar Ubicación</string>
     <string name="vehicle_myLocation">Mi ubicación:</string>
+    <string name="toast_notification_message">Se enviará una notificación media hora antes.</string>
+    <string name="notification_advice">AVISO DE PARKING</string>
+    <string name="notification_text">Te queda poco tiempo de parking</string>
+    <string name="notification_cancel_button">Cancelar</string>
 </resources>

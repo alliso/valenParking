@@ -83,4 +83,11 @@
     <!-- common strings -->
     <string name="connection_failed_string">Connection failed</string>
 
+    <!-- notification strings -->
+    <string name="toast_notification_message"> A notification will be sent half and hour before.</string>
+    <string name="notification_cancel" translatable="false">CANCEL</string>
+    <string name="notification_advice">PARKING ADVICE</string>
+    <string name="notification_text">The parking time will finish soon</string>
+    <string name="notification_cancel_button">Cancel</string>
+
 </resources>
