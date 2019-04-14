@@ -56,6 +56,17 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
         aux = false;
         holder.tv_list_name.setText((data.get(position).getParkingName()));
         holder.tv_list_free.setText((String.valueOf(data.get(position).getCalle())));
+        if(String.valueOf(data.get(position).getFreePlaces()).equals("-1")){
+            String msg = context.getResources().getString(R.string.free_places);
+            msg += " ¿?";
+            holder.tv_free_places.setText(msg);
+        }
+        else{
+
+            String msg = context.getResources().getString(R.string.free_places);
+            msg +=  " " + String.valueOf(data.get(position).getFreePlaces());;
+            holder.tv_free_places.setText(msg);
+        }
         holder.v.setBackgroundColor(parkings.isSelected() ? context.getResources().getColor(R.color.favouriteSelected) : context.getResources().getColor(R.color.colorBgApp));
 
         for(Parkings p : data){
@@ -113,6 +124,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_list_name;
         TextView tv_list_free;
+        TextView tv_free_places;
         public View lytParent;
         View v;
 
@@ -120,6 +132,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
             super(view);
             tv_list_name = (TextView) view.findViewById(R.id.quotation_list_name);
             tv_list_free = (TextView) view.findViewById(R.id.quotation_list_calle);
+            tv_free_places = (TextView) view.findViewById(R.id.PlazasLibres);
             lytParent = (View) view.findViewById(R.id.parking_view);
             v = view;
         }

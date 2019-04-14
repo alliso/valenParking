@@ -51,10 +51,12 @@ import java.util.List;
 import java.util.Map;
 
 import static android.graphics.drawable.ClipDrawable.HORIZONTAL;
+import static com.android.volley.VolleyLog.TAG;
 
 public class FavouriteFragment extends Fragment {
 
     List<Parkings> listParkings = new ArrayList<Parkings>();
+    List<Parkings> listALLParkings = new ArrayList<Parkings>();
     fauvoriteAdapter adapter;
     Integer position = 0;
     RecyclerView recyclerview_parkings;
@@ -137,36 +139,44 @@ public class FavouriteFragment extends Fragment {
         };
 
 
-
-
-
-        GetUserFav(new MyCallback() {
+        getAllParkings(new MyCallbackAll() {
             @Override
-            public void onCallback(JSONArray value) {
+            public void onCallback(List<Parkings> lista) {
+                GetUserFav(new MyCallback() {
+                    @Override
+                    public void onCallback(JSONArray value) {
 
-                try {
-                    for (int i = 0; i < value.length(); i++) {
-                        //Log.v("prueba", value.getJSONObject(i).get("name").toString());
-                        //Log.v("prueba", value.getJSONObject(i).get("address").toString());
+                        try {
+                            for (int i = 0; i < value.length(); i++) {
 
-                        Parkings parking = new Parkings();
-                        parking.setParkingName(value.getJSONObject(i).get("name").toString());
-                        parking.setCalle(value.getJSONObject(i).get("address").toString());
-                        parking.setLat(Float.parseFloat(value.getJSONObject(i).get("lat").toString()));
-                        parking.setLon(Float.parseFloat(value.getJSONObject(i).get("lon").toString()));
-                        listParkings.add(parking);
+                                Parkings parking = new Parkings();
+                                parking.setParkingName(value.getJSONObject(i).get("name").toString());
+                                parking.setCalle(value.getJSONObject(i).get("address").toString());
+                                parking.setLat(Float.parseFloat(value.getJSONObject(i).get("lat").toString()));
+                                parking.setLon(Float.parseFloat(value.getJSONObject(i).get("lon").toString()));
+
+                                for(Parkings p : listALLParkings){
+                                    if(parking.getParkingName().equals(p.getParkingName())){
+                                        parking.setFreePlaces(p.getFreePlaces());
+                                    }
+                                }
+                                listParkings.add(parking);
+                            }
+
+                            adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
+                            recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
+                            recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                            DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), HORIZONTAL);
+                            recyclerview_parkings.addItemDecoration(itemDecor);
+                            recyclerview_parkings.setAdapter(adapter);
+                            progressBar.setVisibility(view.INVISIBLE);
+                        }catch(Exception e){}
                     }
-
-                    adapter = new fauvoriteAdapter(getContext(), R.layout.recyclerview_list, listParkings, listener2, listener);
-                    recyclerview_parkings = view.findViewById(R.id.fauvorite_list);
-                    recyclerview_parkings.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                    DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), HORIZONTAL);
-                    recyclerview_parkings.addItemDecoration(itemDecor);
-                    recyclerview_parkings.setAdapter(adapter);
-                    progressBar.setVisibility(view.INVISIBLE);
-                }catch(Exception e){}
+                });
             }
         });
+
+
         return view;
     }
 
@@ -233,6 +243,38 @@ public class FavouriteFragment extends Fragment {
 
     }
 
+    public void getAllParkings(final MyCallbackAll myCallbackAll){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("parkings");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    String name = postSnapshot.child("name").getValue().toString();
+                    name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+                    String free = postSnapshot.child("free").getValue().toString();
+
+                    Parkings parking = new Parkings();
+                    parking.setParkingName(name);
+                    parking.setFreePlaces(free);
+
+                    listALLParkings.add(parking);
+
+                }
+                myCallbackAll.onCallback(listALLParkings);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+    }
+
     public void updateUserFav(){
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -251,38 +293,13 @@ public class FavouriteFragment extends Fragment {
 
         }catch (Exception e){}
     }
+
     public interface MyCallback {
         void onCallback(JSONArray value);
     }
 
-   /* @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.delete_favs:
-                myDialogFragment DialogFragment = myDialogFragment.getInstance(getString(R.string.favourite_dialog_delete_all_msg));
-                Bundle args = new Bundle();
-                args.putString("click", "all");
-                DialogFragment.setArguments(args);
-                DialogFragment.setTargetFragment(getFragmentManager().findFragmentByTag("FavouriteFragment"), 0);
-                DialogFragment.show(getFragmentManager(), "MyDialogFragment");
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
-
-    /*@Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.menu_favourite, menu);
-        menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_favourites);
-        listavaciaMsg = (TextView) view.findViewById(R.id.empty_fav_msg);
-        listavaciaMsg.setText(R.string.empty_favourite_msg);
-        listavaciaMsg.setVisibility(view.INVISIBLE);
-        progressBar.setVisibility(view.VISIBLE);
-        fav_menu = menu;
-        super.onCreateOptionsMenu(menu,menuInflater);
-    }*/
+    public interface MyCallbackAll {
+        void onCallback(List<Parkings> lista);
+    }
 
 }

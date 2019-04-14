@@ -7,13 +7,14 @@ public class Parkings {
     public float lat;
     public float lon;
     public boolean clicked = false;
+    public String freePlaces;
 
-
-    public Parkings(String name, String calle, float lat, float lon){
+    public Parkings(String name, String calle, float lat, float lon, String freePlaces){
         this.name = name;
         this.calle = calle;
         this.lat = lat;
         this.lon = lon;
+        this.freePlaces = freePlaces;
     }
 
     public Parkings(){ }
@@ -53,5 +54,9 @@ public class Parkings {
     public boolean isClicked() {return clicked; }
 
     public void setClicked(boolean onclicked) {clicked = onclicked; }
+
+    public void setFreePlaces(String free){freePlaces = free; }
+
+    public String getFreePlaces(){return freePlaces;}
 }
 

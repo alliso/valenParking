@@ -48,4 +48,5 @@
     <string name="vehicle_not_known_street_string">Calle desconocida</string>
     <string name="vehicle_cant_get_location_string">No podemos obtener la localización</string>
     <string name="connection_failed_string">Conexión fallida</string>
+    <string name="free_places">Libres: </string>
 </resources>
