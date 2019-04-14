@@ -20,15 +20,15 @@
     <string name="login_email_verified_string">Por favor, confirme el correo electrónico antes.</string>
     <string name="login_complete_data_string">Por favor, confirme el correo electrónico antes.</string>
     <string name="login_googleApiClient_failed_string">Conexión fallida.</string>
-    <string name="login_with_email_passwd">Sesion iniciada con email y contraseña</string>
+    <string name="login_with_email_passwd">Sesion iniciada con correo electrónico y contraseña</string>
     <string name="login_with_google_account">Sesión iniciada con cuenta de google</string>
     <string name="signup_email_failed_string">Ha ocurrido un error inesperado. Por favor, pruebe de nuevo.</string>
-    <string name="signup_email_sent_string">En un breve instante de tiempo recibirá un email. Por favor,  confirmelo antes de iniciar sesión.</string>
+    <string name="signup_email_sent_string">Recibirá un email. Por favor, confirmelo antes de iniciar sesión.</string>
     <string name="signup_data_fill_failed_string">Por favor, asegúrese que todos los datos son correctos.</string>
     <string name="signup_email_error_string">Correo electrónico no válido</string>
     <string name="signup_password_error_string">La contraseña debe contener 1 minúscula, 1 mayúscula, 1 numero y una longitud de 6 carácteres como mínimo</string>
     <string name="signup_confirmpass_error_string">\'Confirmar contraseña\' no coincide con \'Contraseña\'</string>
-    <string name="forgot_email_string">En un breve instante de tiempo recibirá un email para restablecer su contraseña</string>
+    <string name="forgot_email_string">Recibirá un email para restablecer su contraseña</string>
     <string name="forgot_email_failed_string">Por favor, asegúrese de que el correo electrónico es correcto.</string>
     <string name="account_log_out_string">Cerrar sesión</string>
     <string name="account_edit_profile_string">Editar perfil</string>
@@ -49,4 +49,15 @@
     <string name="vehicle_cant_get_location_string">No podemos obtener la localización</string>
     <string name="connection_failed_string">Conexión fallida</string>
     <string name="free_places">Libres: </string>
+    <string name="map_private_parking">Privado</string>
+    <string name="map_public_parking">Público</string>
+    <string name="map_free_places">libres de</string>
+    <string name="map_gps_disabled_sb_text">Habilita la localización para utilizar esta característica</string>
+    <string name="map_gps_disable_sb_button_text">Cerrar</string>
+    <string name="map_no_location">No se ha encontrado la ubicación</string>
+    <string name="menu_clearFavourites">Borrar favoritos</string>
+    <string name="favourite_dialog_delete_title">Borrar favoritos</string>
+    <string name="favourite_dialog_option_cancel">Cancelar</string>
+    <string name="favourite_dialog_option_ok">Aceptar</string>
+    <string name="map_searching_gps">Buscando localización actual</string>
 </resources>

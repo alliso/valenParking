@@ -19,4 +19,7 @@
 
     <color name="secondColor">#7a7cff</color>
     <color name="favouriteSelected">#e1f5fe</color>
+
+    <color name="snackbarText">#FFFFFF</color>
+    <color name="snackbarButtonText">#00ffd8</color>
 </resources>
