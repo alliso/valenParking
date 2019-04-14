@@ -6,7 +6,7 @@
     <string name="main_menu_map_string">Mapa</string>
     <string name="main_menu_vehicle_string">Mi vehiculo</string>
     <string name="main_menu_account_string">Perfil</string>
-    <string name="favourite_dialog_delete_all_title">¿Quieres borrar los parkings seleccionados?</string>
+    <string name="favourite_dialog_delete_all">¿Quieres borrar los parkings seleccionados?</string>
     <string name="empty_favourite_msg">No hay favoritos que mostrar</string>
     <string name="login_password_string">Contraseña</string>
     <string name="login_confirm_password_string">Confirmar contraseña</string>
@@ -48,6 +48,7 @@
     <string name="vehicle_not_known_street_string">Calle desconocida</string>
     <string name="vehicle_cant_get_location_string">No podemos obtener la localización</string>
     <string name="connection_failed_string">Conexión fallida</string>
+    <string name="free_places">Libres: </string>
     <string name="map_private_parking">Privado</string>
     <string name="map_public_parking">Público</string>
     <string name="map_free_places">libres de</string>
