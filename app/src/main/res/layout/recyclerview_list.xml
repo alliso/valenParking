@@ -17,7 +17,7 @@
         android:layout_marginBottom="16dp"
         android:text=""
         android:textAlignment="textEnd"
-        android:textColor="@color/colorMenuText"
+        android:textColor="@color/colorBgSigIn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quotation_list_name"
@@ -25,14 +25,17 @@
 
     <TextView
         android:id="@+id/quotation_list_name"
+        android:maxEms="15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="28dp"
         android:text=""
-        android:textColor="@color/colorSecondaryText"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/PlazasLibres"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,6 +43,7 @@
         android:id="@+id/PlazasLibres"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
