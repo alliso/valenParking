@@ -6,7 +6,7 @@
     <string name="main_menu_map_string">Mapa</string>
     <string name="main_menu_vehicle_string">Mi vehiculo</string>
     <string name="main_menu_account_string">Perfil</string>
-    <string name="favourite_dialog_delete_all_title">¿Quieres borrar los parkings seleccionados?</string>
+    <string name="favourite_dialog_delete_all">¿Quieres borrar los parkings seleccionados?</string>
     <string name="empty_favourite_msg">No hay favoritos que mostrar</string>
     <string name="login_password_string">Contraseña</string>
     <string name="login_confirm_password_string">Confirmar contraseña</string>
@@ -48,6 +48,7 @@
     <string name="vehicle_not_known_street_string">Calle desconocida</string>
     <string name="vehicle_cant_get_location_string">No podemos obtener la localización</string>
     <string name="connection_failed_string">Conexión fallida</string>
+    <string name="free_places">Libres: </string>
     <string name="map_private_parking">Privado</string>
     <string name="map_public_parking">Público</string>
     <string name="map_free_places">libres de</string>
@@ -59,4 +60,14 @@
     <string name="favourite_dialog_option_cancel">Cancelar</string>
     <string name="favourite_dialog_option_ok">Aceptar</string>
     <string name="map_searching_gps">Buscando localización actual</string>
+    <string name="vehicle_floor">Planta:</string>
+    <string name="vehicle_seat">Plaza:</string>
+    <string name="vehicle_location">Guardar Ubicación</string>
+    <string name="vehicle_description">Descripción:</string>
+    <string name="vehicle_deleteLocation">Borrar Ubicación</string>
+    <string name="vehicle_myLocation">Mi ubicación:</string>
+    <string name="toast_notification_message">Se enviará una notificación media hora antes.</string>
+    <string name="notification_advice">AVISO DE PARKING</string>
+    <string name="notification_text">Te queda poco tiempo de parking</string>
+    <string name="notification_cancel_button">Cancelar</string>
 </resources>

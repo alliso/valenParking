@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.upv.dadm.valenparking.R;
+
 import static android.content.Context.ALARM_SERVICE;
 
 public class CancelNotification extends BroadcastReceiver {
@@ -14,7 +16,7 @@ public class CancelNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (intent.getAction().equalsIgnoreCase("CANCEL")) {
+        if (intent.getAction().equalsIgnoreCase(context.getString(R.string.notification_cancel))) {
 
             //elimina la notificación
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

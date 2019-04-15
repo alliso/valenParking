@@ -40,8 +40,9 @@
     <string name="favourite_dialog_delete_title">Delete favourites</string>
     <string name="favourite_dialog_option_cancel">CANCEL</string>
     <string name="favourite_dialog_option_ok">OK</string>
-    <string name="favourite_dialog_delete_all_title">Do you want to delete the seleccted parkings?</string>
+    <string name="favourite_dialog_delete_all">Do you want to delete the selected parkings?</string>
     <string name="empty_favourite_msg">No favourites to show</string>
+    <string name="free_places">Free: </string>
 
     <!-- Map Fragment -->
     <string name="map_private_parking">Private</string>
@@ -73,9 +74,20 @@
     <string name="vehicle_edit_text_string">Write a short description about your parking</string>
     <string name="vehicle_not_known_street_string">Unknown street</string>
     <string name="vehicle_cant_get_location_string">We can not get the location</string>
-
-
+    <string name="vehicle_seat">Seat:</string>
+    <string name="vehicle_floor">Floor:</string>
+    <string name="vehicle_description">Description:</string>
+    <string name="vehicle_location">Save  Location</string>
+    <string name="vehicle_deleteLocation">Delete  Location</string>
+    <string name="vehicle_myLocation">My Location:</string>
     <!-- common strings -->
     <string name="connection_failed_string">Connection failed</string>
+
+    <!-- notification strings -->
+    <string name="toast_notification_message"> A notification will be sent half and hour before.</string>
+    <string name="notification_cancel" translatable="false">CANCEL</string>
+    <string name="notification_advice">PARKING ADVICE</string>
+    <string name="notification_text">The parking time will finish soon</string>
+    <string name="notification_cancel_button">Cancel</string>
 
 </resources>
