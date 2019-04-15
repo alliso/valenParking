@@ -90,4 +90,9 @@
     <string name="notification_text">The parking time will finish soon</string>
     <string name="notification_cancel_button">Cancel</string>
 
+    <!-- Timer fragment -->
+    <string name="planned_time_string">Planned time: </string>
+    <string name="save_time_string">Save time</string>
+    <string name="delete_time_string">Delete time</string>
+
 </resources>

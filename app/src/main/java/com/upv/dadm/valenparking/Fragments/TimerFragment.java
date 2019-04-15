@@ -36,6 +36,7 @@ public class TimerFragment extends Fragment {
     private NumberPicker minutePicker;
     private NumberPicker amPicker;
     private Button button;
+    private Button deleteButton;
     private TextView timeText;
     private TextView plannedTimeText;
     private ConstraintLayout timerLayout;
@@ -74,19 +75,24 @@ public class TimerFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(button.getText().equals("Guardar hora")){
-                    if(timerFromPicker()){
-                        sendNotification();
-                        showTimer();
-                    } else {
-                        Toast.makeText(getContext(),"Hora no valida", Toast.LENGTH_SHORT).show();
-                    }
-                } else{
-                    deleteNotification();
-                    showPicker();
+                if(timerFromPicker()){
+                    sendNotification();
+                    showTimer();
+                } else {
+                    Toast.makeText(getContext(),"Hora no valida", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        deleteButton = view.findViewById(R.id.timerDeleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteNotification();
+                showPicker();
+            }
+        });
+
+
         timeText = view.findViewById(R.id.timerText);
         timerLayout = view.findViewById(R.id.timerLayout);
 
@@ -109,17 +115,21 @@ public class TimerFragment extends Fragment {
     }
 
     private void showPicker(){
-        button.setText("Guardar hora");
+        button.setVisibility(View.VISIBLE);
+        deleteButton.setVisibility(View.INVISIBLE);
 
         hourPicker.setVisibility(View.VISIBLE);
         minutePicker.setVisibility(View.VISIBLE);
         amPicker.setVisibility(View.VISIBLE);
 
         timerLayout.setVisibility(View.INVISIBLE);
+
     }
 
     private void showTimer(){
-        button.setText("Borrar hora");
+        button.setVisibility(View.INVISIBLE);
+        deleteButton.setVisibility(View.VISIBLE);
+
         hourPicker.setVisibility(View.INVISIBLE);
         minutePicker.setVisibility(View.INVISIBLE);
         amPicker.setVisibility(View.INVISIBLE);
@@ -177,7 +187,7 @@ public class TimerFragment extends Fragment {
         if(diff > 0) {
             if(countdown != null) countdown.cancel();
 
-            String plannedTime = "Hora programada ";
+            String plannedTime = getString(R.string.planned_time_string);
             plannedTime += hour < 10 ? "0" + hour + ":" : hour + ":";
             plannedTime += minute > 10 ? minute : minute == 0 ? "00" : "0" + minute;
 
