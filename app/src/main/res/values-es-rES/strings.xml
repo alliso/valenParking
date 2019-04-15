@@ -70,7 +70,9 @@
     <string name="notification_advice">AVISO DE PARKING</string>
     <string name="notification_text">Te queda poco tiempo de parking</string>
     <string name="notification_cancel_button">Cancelar</string>
-    <string name="planned_time_string">"Hora programada: "</string>
+    <string name="planned_time_string">"Hora programada "</string>
     <string name="save_time_string">Guardar hora</string>
     <string name="delete_time_string">Borrar hora</string>
+    <string name="invalid_time_string">Invalid time</string>
+    <string name="time_left_string">Faltan %1$d horas y %2$d minutos</string>
 </resources>
