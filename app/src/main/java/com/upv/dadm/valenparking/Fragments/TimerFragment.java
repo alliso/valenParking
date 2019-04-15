@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -37,7 +36,8 @@ public class TimerFragment extends Fragment {
     private NumberPicker minutePicker;
     private NumberPicker amPicker;
     private Button button;
-    private TextView text;
+    private TextView timeText;
+    private TextView plannedTimeText;
     private ConstraintLayout timerLayout;
 
     private SharedPreferences prefs;
@@ -87,8 +87,10 @@ public class TimerFragment extends Fragment {
                 }
             }
         });
-        text = view.findViewById(R.id.timerText);
+        timeText = view.findViewById(R.id.timerText);
         timerLayout = view.findViewById(R.id.timerLayout);
+
+        plannedTimeText = view.findViewById(R.id.timerPlannedHour);
 
 
         if(prefs.getString("timerCalendar",null) == null){
@@ -174,6 +176,13 @@ public class TimerFragment extends Fragment {
     public void startTimer(int diff){
         if(diff > 0) {
             if(countdown != null) countdown.cancel();
+
+            String plannedTime = "Hora programada ";
+            plannedTime += hour < 10 ? "0" + hour + ":" : hour + ":";
+            plannedTime += minute > 10 ? minute : minute == 0 ? "00" : "0" + minute;
+
+            plannedTimeText.setText(plannedTime);
+
             countdown = new CountDownTimer(diff, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -186,12 +195,14 @@ public class TimerFragment extends Fragment {
                         time = hours < 10 ? "0" + hours + ":" : hours + ":";
                     if(minutes > 0)
                         time += minutes < 10 ? "0" + minutes + ":" : minutes + ":";
+                    else
+                        time += "00:";
                     if(seconds > 0)
                         time += seconds < 10 ? "0" + seconds : seconds;
                     if(seconds == 0)
                         time += "00";
 
-                    text.setText(time);
+                    timeText.setText(time);
                 }
 
                 @Override
