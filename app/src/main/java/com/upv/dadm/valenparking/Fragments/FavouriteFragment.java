@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -33,7 +31,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.upv.dadm.valenparking.Adapters.fauvoriteAdapter;
-import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
 
@@ -103,13 +100,9 @@ public class FavouriteFragment extends Fragment {
 
             }
         });
-        //setHasOptionsMenu(true);
-
-
         listener2 = new fauvoriteAdapter.OnFavouriteLongClickListener() {
             @Override
             public void onFavouriteLongClick() {
-                //fav_menu.findItem(R.id.delete_favs).setVisible(hideIcon);
                 fab.show();
 
             }
@@ -125,7 +118,6 @@ public class FavouriteFragment extends Fragment {
                     }
                 }
                 if(!aux){
-                    //fav_menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
                     fab.hide();
                 }
             }
@@ -163,7 +155,7 @@ public class FavouriteFragment extends Fragment {
                             recyclerview_parkings.addItemDecoration(itemDecor);
                             recyclerview_parkings.setAdapter(adapter);
                             progressBar.setVisibility(view.INVISIBLE);
-                        }catch(Exception e){}
+                        }catch(Exception e){e.printStackTrace();}
                     }
                 });
             }
@@ -186,7 +178,6 @@ public class FavouriteFragment extends Fragment {
                 }
             }
             if(cont == listParkings.size()) {
-                //fav_menu.findItem(R.id.delete_favs).setVisible(!hideIcon);
 
                 listavaciaMsg.setVisibility(view.VISIBLE);
             }

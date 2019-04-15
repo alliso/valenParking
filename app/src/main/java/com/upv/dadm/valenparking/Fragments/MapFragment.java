@@ -3,7 +3,6 @@ package com.upv.dadm.valenparking.Fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -62,7 +61,6 @@ import com.upv.dadm.valenparking.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -365,6 +363,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     } else {
                         places = freePlaces + " ";
                     }
+
                     places += getString(R.string.map_free_places) + " " + totalPlaces;
                     infoWindow.setPlaces(places);
                     infoWindow.setType(type.equals("0") ? getString(R.string.map_public_parking) : getString(R.string.map_private_parking));
