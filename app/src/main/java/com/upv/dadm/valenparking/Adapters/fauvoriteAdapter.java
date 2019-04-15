@@ -1,20 +1,12 @@
 package com.upv.dadm.valenparking.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.upv.dadm.valenparking.Fragments.FavouriteFragment;
 import com.upv.dadm.valenparking.MainActivity;
 import com.upv.dadm.valenparking.Parkings;
 import com.upv.dadm.valenparking.R;
@@ -60,8 +52,7 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
             String msg = context.getResources().getString(R.string.free_places);
             msg += " ¿?";
             holder.tv_free_places.setText(msg);
-        }
-        else{
+        } else{
 
             String msg = context.getResources().getString(R.string.free_places);
             msg +=  " " + String.valueOf(data.get(position).getFreePlaces());;
@@ -74,8 +65,6 @@ public class fauvoriteAdapter extends RecyclerView.Adapter<fauvoriteAdapter.View
                 aux = true;
             }
         }
-
-
 
             holder.lytParent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

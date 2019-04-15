@@ -234,7 +234,7 @@ public class TimerFragment extends Fragment {
 
             String plannedTime = getString(R.string.planned_time_string);
             plannedTime += hour < 10 ? " 0" + hour + ":" : " " + hour + ":";
-            plannedTime += minute > 10 ? minute : minute == 0 ? "00" : "0" + minute;
+            plannedTime += minute >= 10 ? minute : minute == 0 ? "00" : "0" + minute;
 
             plannedTimeText.setText(plannedTime);
 
